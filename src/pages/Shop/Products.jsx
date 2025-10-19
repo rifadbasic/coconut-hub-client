@@ -2,9 +2,11 @@ import { motion } from "framer-motion";
 import { Link, useOutletContext } from "react-router";
 import { useMemo, useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 
 const Products = () => {
   const { sortOption, selectedCategories } = useOutletContext();
+  const { addToCart } = useCart();
 
   const [products] = useState([
     {
@@ -146,16 +148,17 @@ const Products = () => {
                 </p>
 
                 <button
-                  disabled={product.quantity === 0}
-                  className={`mt-auto flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-white font-medium duration-300 ${
-                    product.quantity === 0
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-green-600 hover:bg-green-700"
-                  }`}
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  {product.quantity === 0 ? "Unavailable" : "Add to Cart"}
-                </button>
+                onClick={() => addToCart(product)}
+                disabled={product.quantity === 0}
+                className={`mt-auto flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-white font-medium duration-300 ${
+                  product.quantity === 0
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700"
+                }`}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                {product.quantity === 0 ? "Unavailable" : "Add to Cart"}
+              </button>
               </div>
             </motion.div>
           ))}

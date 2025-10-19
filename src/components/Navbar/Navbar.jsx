@@ -2,11 +2,14 @@ import { useState } from "react";
 import { NavLink, Link } from "react-router";
 import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import "./navbar.css";
+import { useCart } from "../../context/CartContext.jsx";
 
 const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { cartCount, toggleCart } = useCart();
 
   // ✅ All Nav Links in one variable
   const navLinks = [
@@ -56,15 +59,17 @@ const Navbar = () => {
           </button>
 
           {/* Cart */}
-          <Link
-            to="/cart"
-            className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
-          >
-            <ShoppingCart className="w-5 h-5 text-gray-700" />
-            <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-              2
-            </span>
-          </Link>
+          <button
+        onClick={toggleCart}
+        className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
+      >
+        <ShoppingCart className="w-5 h-5 text-gray-700" />
+        {cartCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+            {cartCount}
+          </span>
+        )}
+      </button>
 
           {/* Profile */}
           <div className="relative">
