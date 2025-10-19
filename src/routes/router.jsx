@@ -5,6 +5,9 @@ import ShopLayouts from "../layoutes/ShopLayouts";
 import Home from "../pages/Home";
 import Review from "../pages/Review";
 import About from "../pages/About";
+import SingleProduct from "../pages/SingleProduct";
+import Checkout from "../pages/checkout/Checkout";
+import FinalCheckout from "../pages/checkout/FinalCheckout";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,18 @@ const router = createBrowserRouter([
       {
         path: "/review",
         element: <Review/>,
+      },
+      {
+        path: "/products/:id",
+        element: <SingleProduct />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout/>,
+      },
+      {
+        path: "/final-checkout",
+        element: <FinalCheckout/>,
       },
     ],
   },

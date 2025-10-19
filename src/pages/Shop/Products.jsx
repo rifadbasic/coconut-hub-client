@@ -17,6 +17,7 @@ const Products = () => {
       quantity: 10,
       rating: 4.5,
       category: "Fresh Coconuts",
+      description: "Naturally sweet green coconuts harvested fresh daily.",
     },
     {
       id: 2,
@@ -27,6 +28,7 @@ const Products = () => {
       quantity: 0,
       rating: 4,
       category: "Fresh Coconuts",
+      description: "Rich and mature brown coconuts, perfect for cooking.",
     },
     {
       id: 3,
@@ -37,6 +39,7 @@ const Products = () => {
       quantity: 8,
       rating: 3.5,
       category: "Coconut Oil",
+      description: "Pure cold-pressed coconut oil, ideal for skin, hair, and cooking.",
     },
     {
       id: 4,
@@ -47,6 +50,7 @@ const Products = () => {
       quantity: 5,
       rating: 4.2,
       category: "Dry Coconuts",
+      description: "High-quality dried coconuts for long shelf life.",
     },
     {
       id: 5,
@@ -57,21 +61,20 @@ const Products = () => {
       quantity: 12,
       rating: 4.6,
       category: "Cosmetics",
+      description: "Creamy coconut extract for cooking and skincare.",
     },
   ]);
 
   // Sort + Filter Logic
-  const filteredProducts = useMemo(() => {
+    const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
-    // Filter by category
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((p) =>
         selectedCategories.includes(p.category)
       );
     }
 
-    // Sort by price
     if (sortOption === "lowToHigh") {
       filtered.sort((a, b) => a.discountPrice - b.discountPrice);
     } else if (sortOption === "highToLow") {
@@ -98,7 +101,7 @@ const Products = () => {
               key={product.id}
               className="bg-white shadow-md rounded-2xl overflow-hidden border hover:shadow-lg transition-all duration-300 flex flex-col"
             >
-              <Link to={`/product/${product.id}`} className="overflow-hidden">
+              <Link to={`/products/${product.id}`} className="overflow-hidden">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -107,7 +110,7 @@ const Products = () => {
               </Link>
 
               <div className="p-4 flex flex-col flex-grow">
-                <Link to={`/product/${product.id}`}>
+                <Link to={`/products/${product.id}`}>
                   <h2 className="text-lg font-semibold text-gray-800 hover:text-green-600 duration-200">
                     {product.name}
                   </h2>

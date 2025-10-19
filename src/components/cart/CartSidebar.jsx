@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Trash2, Plus, Minus } from "lucide-react";
 import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router";
 
 const CartSidebar = () => {
   const {
@@ -12,6 +13,13 @@ const CartSidebar = () => {
     removeFromCart,
     totalPrice,
   } = useCart();
+
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    toggleCart();
+    navigate("/checkout");
+  };
 
   return (
     <AnimatePresence>
@@ -96,6 +104,7 @@ const CartSidebar = () => {
                 <span className="font-bold text-green-700">৳{totalPrice}</span>
               </div>
               <button
+                onClick={handleCheckout}
                 disabled={cartItems.length === 0}
                 className={`w-full py-2 rounded-lg text-white font-semibold ${
                   cartItems.length === 0
