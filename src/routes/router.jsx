@@ -2,6 +2,9 @@ import { createBrowserRouter } from "react-router";
 import MainLayouts from "../layoutes/MainLayouts";
 import Products from "../pages/Shop/Products";
 import ShopLayouts from "../layoutes/ShopLayouts";
+import Home from "../pages/Home";
+import Review from "../pages/Review";
+import About from "../pages/About";
 
 const router = createBrowserRouter([
   {
@@ -11,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <div>Home</div>,
+        element: <Home />,
       },
       {
         path: "/shop",
@@ -25,11 +28,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/about",
-        element: <div>About</div>,
+        element: <About />,
       },
       {
         path: "/review",
-        element: <div>Review</div>,
+        element: <Review/>,
       },
     ],
   },

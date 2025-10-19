@@ -24,11 +24,21 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link
-          to="/"
-          className="text-2xl font-bold text-green-600 flex items-center gap-2"
-        >
-          🥥 Coconut<span className="text-gray-700">BD</span>
-        </Link>
+  to="/"
+  className="flex items-center gap-2 text-2xl font-bold"
+>
+  {/* Logo Image */}
+  <img
+    src="/src/assets/logo.jpeg" // replace with your logo URL
+    alt="CoconutBD Logo"
+    className="w-10 h-10 object-contain"
+  />
+
+  {/* Text */}
+  <span className="text-green-600">Coconut</span>
+  <span className="text-gray-700">BD</span>
+</Link>
+
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-6 text-gray-700 font-medium">
@@ -60,9 +70,9 @@ const Navbar = () => {
 
           {/* Cart */}
           <button
-        onClick={toggleCart}
-        className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
-      >
+                onClick={toggleCart}
+                 className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
+           >
         <ShoppingCart className="w-5 h-5 text-gray-700" />
         {cartCount > 0 && (
           <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
