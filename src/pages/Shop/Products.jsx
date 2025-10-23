@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
 import { Link, useOutletContext } from "react-router";
 import { useMemo, useState } from "react";
 import { ShoppingCart } from "lucide-react";
+import { useCart } from "../../context/CartContext";
 
 const Products = () => {
   const { sortOption, selectedCategories } = useOutletContext();
+  const { addToCart } = useCart();
 
   const [products] = useState([
     {
@@ -16,6 +17,7 @@ const Products = () => {
       quantity: 10,
       rating: 4.5,
       category: "Fresh Coconuts",
+      description: "Naturally sweet green coconuts harvested fresh daily.",
     },
     {
       id: 2,
@@ -26,6 +28,7 @@ const Products = () => {
       quantity: 0,
       rating: 4,
       category: "Fresh Coconuts",
+      description: "Rich and mature brown coconuts, perfect for cooking.",
     },
     {
       id: 3,
@@ -36,6 +39,7 @@ const Products = () => {
       quantity: 8,
       rating: 3.5,
       category: "Coconut Oil",
+      description: "Pure cold-pressed coconut oil, ideal for skin, hair, and cooking.",
     },
     {
       id: 4,
@@ -46,6 +50,7 @@ const Products = () => {
       quantity: 5,
       rating: 4.2,
       category: "Dry Coconuts",
+      description: "High-quality dried coconuts for long shelf life.",
     },
     {
       id: 5,
@@ -56,21 +61,20 @@ const Products = () => {
       quantity: 12,
       rating: 4.6,
       category: "Cosmetics",
+      description: "Creamy coconut extract for cooking and skincare.",
     },
   ]);
 
-  // 🪄 Sort + Filter Logic
-  const filteredProducts = useMemo(() => {
+  // Sort + Filter Logic
+    const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
-    // Filter by category
     if (selectedCategories.length > 0) {
       filtered = filtered.filter((p) =>
         selectedCategories.includes(p.category)
       );
     }
 
-    // Sort by price
     if (sortOption === "lowToHigh") {
       filtered.sort((a, b) => a.discountPrice - b.discountPrice);
     } else if (sortOption === "highToLow") {
@@ -80,19 +84,9 @@ const Products = () => {
     return filtered;
   }, [products, sortOption, selectedCategories]);
 
-  const cardVariants = {
-    hiddenLeft: { opacity: 0, x: 40 },
-    hiddenRight: { opacity: 10, x: 0 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
-    },
-  };
-
   return (
-    <div className="max-w-7xl mx-auto px-4 py-10">
-      <h1 className="text-3xl font-bold text-center text-green-700 mb-10">
+    <div className="max-w-7xl mx-auto p-4">
+      <h1 className="text-3xl font-bold text-center text-green-700 bg-amber-400 p-4 mb-10">
         🥥 Our Coconut Products
       </h1>
 
@@ -102,17 +96,13 @@ const Products = () => {
         </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredProducts.map((product, index) => (
-            <motion.div
+          {filteredProducts.map((product) => (
+            <div
               key={product.id}
-              initial={index % 2 === 0 ? "hiddenLeft" : "hiddenRight"}
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={cardVariants}
               className="bg-white shadow-md rounded-2xl overflow-hidden border hover:shadow-lg transition-all duration-300 flex flex-col"
             >
-              <Link to={`/product/${product.id}`} className="overflow-hidden">
-                <motion.img
+              <Link to={`/products/${product.id}`} className="overflow-hidden">
+                <img
                   src={product.image}
                   alt={product.name}
                   className="w-full h-56 object-cover hover:scale-105 duration-300"
@@ -120,7 +110,7 @@ const Products = () => {
               </Link>
 
               <div className="p-4 flex flex-col flex-grow">
-                <Link to={`/product/${product.id}`}>
+                <Link to={`/products/${product.id}`}>
                   <h2 className="text-lg font-semibold text-gray-800 hover:text-green-600 duration-200">
                     {product.name}
                   </h2>
@@ -146,6 +136,7 @@ const Products = () => {
                 </p>
 
                 <button
+                  onClick={() => addToCart(product)}
                   disabled={product.quantity === 0}
                   className={`mt-auto flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-white font-medium duration-300 ${
                     product.quantity === 0
@@ -157,7 +148,7 @@ const Products = () => {
                   {product.quantity === 0 ? "Unavailable" : "Add to Cart"}
                 </button>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}
