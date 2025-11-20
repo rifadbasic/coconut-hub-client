@@ -7,6 +7,9 @@ const FinalCheckout = () => {
   const location = useLocation();
   const { finalTotal = 0 } = location.state || {};
 
+  console.log(cartItems);
+  
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -111,7 +114,7 @@ const FinalCheckout = () => {
                       <tr>
                         <td>${item.name}</td>
                         <td>${item.quantity}</td>
-                        <td>৳${item.discountPrice}</td>
+                        <td>৳${item.price}</td>
                         <td>৳${item.discountPrice * item.quantity}</td>
                       </tr>
                     `

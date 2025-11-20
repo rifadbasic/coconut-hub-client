@@ -8,6 +8,8 @@ const Checkout = () => {
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
+  console.log(cartItems);
+
   const navigate = useNavigate();
 
   const handleDeliveryChange = (e) => {
@@ -47,15 +49,15 @@ const Checkout = () => {
               className="flex items-center gap-4 border p-3 rounded-lg"
             >
               <img
-                src={item.image}
+                src={item.img}
                 alt={item.name}
                 className="w-20 h-20 object-cover rounded-md"
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{item.name}</h3>
                 <p className="text-green-700 font-bold">
-                  ৳{item.discountPrice} × {item.quantity} = ৳
-                  {item.discountPrice * item.quantity}
+                  ৳{item.finalPrice == 0 ? item.price : item.discountPrice} × {item.quantity} = ৳
+                  {item.finalPrice * item.quantity}
                 </p>
               </div>
             </div>

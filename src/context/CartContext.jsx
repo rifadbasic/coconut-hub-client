@@ -1,21 +1,30 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  // Load from localStorage if exists
+  const [cartItems, setCartItems] = useState(() => {
+    const saved = localStorage.getItem("cartItems");
+    return saved ? JSON.parse(saved) : [];
+  });
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // Persist cart to localStorage
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const toggleCart = () => setIsCartOpen((prev) => !prev);
 
   const addToCart = (product) => {
     setCartItems((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existing = prev.find((item) => item._id === product._id);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
@@ -28,7 +37,7 @@ export const CartProvider = ({ children }) => {
   const increaseQty = (id) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+        item._id === id ? { ...item, quantity: item.quantity + 1 } : item
       )
     );
   };
@@ -36,7 +45,7 @@ export const CartProvider = ({ children }) => {
   const decreaseQty = (id) => {
     setCartItems((prev) =>
       prev.map((item) =>
-        item.id === id && item.quantity > 1
+        item._id === id && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
       )
@@ -44,12 +53,16 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (id) => {
-    setCartItems((prev) => prev.filter((item) => item.id !== id));
+    setCartItems((prev) => prev.filter((item) => item._id !== id));
   };
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.discountPrice * item.quantity,
+    (acc, item) => acc + item.finalPrice * item.quantity,
+    0
+  );
+  const totalWeight = cartItems.reduce(
+    (acc, item) => acc + (item.weight || 0) * item.quantity,
     0
   );
 
@@ -65,6 +78,7 @@ export const CartProvider = ({ children }) => {
         isCartOpen,
         cartCount,
         totalPrice,
+        totalWeight,
       }}
     >
       {children}
