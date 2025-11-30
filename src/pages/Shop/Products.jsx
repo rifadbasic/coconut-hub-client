@@ -120,10 +120,10 @@ const Products = () => {
                 {/* Price & Original Price */}
                 <div className="mt-2 flex items-center gap-2">
                   <span className="text-green-700 font-bold text-lg">
-                    ৳{product.finalPrice}
+                    ৳{(product.finalPrice === 0 ? (Math.round(product.price)) : (Math.round(product.finalPrice )) || [])}
                   </span>
                   {product.discount > 0 && (
-                    <span className="text-gray-500 line-through text-sm">{`৳${product.price}`}</span>
+                    <span className="text-gray-500 line-through text-sm">{`৳${(Math.round(product.price))}`}</span>
                   )}
                 </div>
 

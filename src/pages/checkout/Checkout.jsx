@@ -8,8 +8,6 @@ const Checkout = () => {
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  console.log(cartItems);
-
   const navigate = useNavigate();
 
   const handleDeliveryChange = (e) => {
@@ -27,6 +25,11 @@ const Checkout = () => {
   const finalTotal = totalPrice + deliveryCharge - discount;
 
   const handleProcess = () => {
+    if (deliveryCharge === 0) {
+      alert("❌ Please select a delivery location before proceeding!");
+      return; // Stop navigation
+    }
+
     navigate("/final-checkout", {
       state: {
         finalTotal,
@@ -56,8 +59,8 @@ const Checkout = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{item.name}</h3>
                 <p className="text-green-700 font-bold">
-                  ৳{item.finalPrice == 0 ? item.price : item.discountPrice} × {item.quantity} = ৳
-                  {item.finalPrice * item.quantity}
+                  ৳{item.finalPrice == 0 ? item.price : item.discount} ×{" "}
+                  {item.quantity} = ৳{(Math.round(item.finalPrice)) * item.quantity}
                 </p>
               </div>
             </div>
@@ -137,7 +140,7 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between font-bold text-green-700 text-lg">
             <span>Total:</span>
-            <span>৳{finalTotal}</span>
+            <span>৳{(Math.round(finalTotal))}</span>
           </div>
         </div>
 

@@ -29,7 +29,7 @@ const Navbar = () => {
 >
   {/* Logo Image */}
   <img
-    src="/src/assets/logo.jpeg" // replace with your logo URL
+    src="https://i.ibb.co.com/XZCMDGB5/logo.jpg" // replace with your logo URL
     alt="CoconutBD Logo"
     className="w-10 h-10 object-contain"
   />
