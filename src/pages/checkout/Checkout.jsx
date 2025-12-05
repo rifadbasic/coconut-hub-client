@@ -8,6 +8,7 @@ const Checkout = () => {
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
+  console.log(totalPrice)
   const navigate = useNavigate();
 
   const handleDeliveryChange = (e) => {
@@ -59,8 +60,13 @@ const Checkout = () => {
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{item.name}</h3>
                 <p className="text-green-700 font-bold">
-                  ৳{item.finalPrice == 0 ? item.price : item.discount} ×{" "}
-                  {item.quantity} = ৳{(Math.round(item.finalPrice)) * item.quantity}
+                  ৳
+                  {Math.round(item.price - (item.price * item.discount) / 100) || []}
+                  × {item.quantity} = ৳
+                  {Math.round(
+                      item.price - (item.price * item.discount) / 100
+                     || []
+                  ) * item.quantity}
                 </p>
               </div>
             </div>
@@ -119,7 +125,7 @@ const Checkout = () => {
           </div>
           {discount > 0 && (
             <p className="text-green-600 mt-2">
-              Coupon applied! You saved ৳{discount}
+              Coupon applied! You saved ৳{Math.round(discount)}
             </p>
           )}
         </div>
@@ -136,11 +142,11 @@ const Checkout = () => {
           </div>
           <div className="flex justify-between">
             <span>Discount:</span>
-            <span>- ৳{discount}</span>
+            <span>- ৳{Math.round(discount)}</span>
           </div>
           <div className="flex justify-between font-bold text-green-700 text-lg">
             <span>Total:</span>
-            <span>৳{(Math.round(finalTotal))}</span>
+            <span>৳{Math.round(finalTotal)}</span>
           </div>
         </div>
 

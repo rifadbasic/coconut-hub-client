@@ -16,7 +16,7 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // console.log(products);
+  console.log(products);
 
   const observer = useRef();
   const isFetching = useRef(false);
@@ -120,10 +120,15 @@ const Products = () => {
                 {/* Price & Original Price */}
                 <div className="mt-2 flex items-center gap-2">
                   <span className="text-green-700 font-bold text-lg">
-                    ৳{(product.finalPrice === 0 ? (Math.round(product.price)) : (Math.round(product.finalPrice )) || [])}
+                    ৳
+                    {Math.round(
+                      product.price - (product.price * product.discount) / 100
+                    ) || []}
                   </span>
                   {product.discount > 0 && (
-                    <span className="text-gray-500 line-through text-sm">{`৳${(Math.round(product.price))}`}</span>
+                    <span className="text-gray-500 line-through text-sm">{`৳${Math.round(
+                      product.price
+                    )}`}</span>
                   )}
                 </div>
 
@@ -131,7 +136,11 @@ const Products = () => {
 
                 {/* Weight & Quantity (side by side) */}
                 <div className="flex justify-between mt-2 text-sm text-gray-600">
-                  <span>Weight: {product.weight > 0 && (product.weight / 1000).toFixed(2)} kg</span>
+                  <span>
+                    Weight:{" "}
+                    {product.weight > 0 && (product.weight / 1000).toFixed(2)}{" "}
+                    kg
+                  </span>
                   <span>
                     <p
                       className={`mt-1 text-sm ${

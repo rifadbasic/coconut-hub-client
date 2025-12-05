@@ -35,8 +35,8 @@ const Navbar = () => {
   />
 
   {/* Text */}
-  <span className="text-green-600">Coconut</span>
-  <span className="text-gray-700">BD</span>
+  <span className="text-green-600 hidden md:block">Coconut</span>
+  <span className="text-gray-700 hidden md:block">BD</span>
 </Link>
 
 

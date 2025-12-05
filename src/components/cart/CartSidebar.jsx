@@ -74,10 +74,14 @@ const CartSidebar = () => {
                       </p>
                       <h3 className="text-sm font-semibold">{item.name}</h3>
                       <p className="text-green-700 font-bold">
-                        ৳{(Math.round(item.finalPrice)) * item.quantity}
+                        ৳
+                        {Math.round(
+                            item.price - (item.price * item.discount) / 100
+                           || []
+                        ) * item.quantity}
                       </p>
                       <p className="text-sm text-gray-500">
-                        Weight: {(item.weight === 0 ? 1 : item.weight)} g
+                        Weight: {item.weight === 0 ? 1 : item.weight} g
                       </p>
 
                       {/* Qty controls */}
@@ -112,11 +116,15 @@ const CartSidebar = () => {
             <div className="p-4 border-t space-y-2">
               <div className="flex justify-between">
                 <span className="font-semibold">Total Price:</span>
-                <span className="font-bold text-green-700">৳{(Math.round(totalPrice))}</span>
+                <span className="font-bold text-green-700">
+                  ৳{Math.round(totalPrice)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="font-semibold">Total Weight:</span>
-                <span className="font-bold text-green-700">{(totalWeight / 1000).toFixed(2)} kg</span>
+                <span className="font-bold text-green-700">
+                  {(totalWeight / 1000).toFixed(2)} kg
+                </span>
               </div>
               <button
                 onClick={handleCheckout}

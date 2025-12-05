@@ -79,7 +79,13 @@ const SingleProduct = () => {
           </h1>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl font-semibold text-green-700">
-              ৳ {Math.round(product.finalPrice)} TK
+              ৳ {Math.round(
+                      product.price - (product.price * product.discount) / 100
+                     || []
+
+
+
+)} TK
             </span>
             <span className="text-gray-500 line-through">৳{product.price}</span>
           </div>
@@ -143,7 +149,13 @@ const SingleProduct = () => {
                 </Link>
                 <h3 className="mt-3 text-lg font-semibold">{item.name}</h3>
                 <span className="text-green-700 font-bold">
-                  ৳ {(Math.round(item.finalPrice))} TK
+                  ৳ {(Math.round(item.Math.round(
+                      product.price - (product.price * product.discount) / 100
+                    ) || []
+
+
+
+))} TK
                 </span>
                 <Link
                   to={`/products/${item._id}`}

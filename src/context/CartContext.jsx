@@ -58,7 +58,10 @@ export const CartProvider = ({ children }) => {
 
   const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const totalPrice = cartItems.reduce(
-    (acc, item) => acc + item.finalPrice * item.quantity,
+    (acc, item) =>
+      acc +
+      Math.round(item.price - (item.price * item.discount) / 100) *
+        item.quantity,
     0
   );
   const totalWeight = cartItems.reduce(
