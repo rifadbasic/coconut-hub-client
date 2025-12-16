@@ -149,9 +149,9 @@ const SingleProduct = () => {
                 </Link>
                 <h3 className="mt-3 text-lg font-semibold">{item.name}</h3>
                 <span className="text-green-700 font-bold">
-                  ৳ {(Math.round(item.Math.round(
+                  ৳ {(Math.round(
                       product.price - (product.price * product.discount) / 100
-                    ) || []
+                     || []
 
 
 
