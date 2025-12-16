@@ -47,7 +47,12 @@ const SingleProduct = () => {
         const res = await axios.get(`/products?category=${product.category}`);
         if (res.data.success) {
           setSimilarProducts(
-            res.data.products.filter((p) => p._id !== product._id && p.category === product.category && p.stock > 0)
+            res.data.products.filter(
+              (p) =>
+                p._id !== product._id &&
+                p.category === product.category &&
+                p.stock > 0
+            )
           );
         }
       } catch (err) {
@@ -79,13 +84,11 @@ const SingleProduct = () => {
           </h1>
           <div className="flex items-center gap-3 mb-4">
             <span className="text-2xl font-semibold text-green-700">
-              ৳ {Math.round(
-                      product.price - (product.price * product.discount) / 100
-                     || []
-
-
-
-)} TK
+              ৳{" "}
+              {Math.round(
+                product.price - (product.price * product.discount) / 100 || []
+              )}{" "}
+              TK
             </span>
             <span className="text-gray-500 line-through">৳{product.price}</span>
           </div>
@@ -149,13 +152,12 @@ const SingleProduct = () => {
                 </Link>
                 <h3 className="mt-3 text-lg font-semibold">{item.name}</h3>
                 <span className="text-green-700 font-bold">
-                  ৳ {(Math.round(
-                      product.price - (product.price * product.discount) / 100
-                     || []
-
-
-
-))} TK
+                  ৳{" "}
+                  {Math.round(
+                    item.price - (item.price * item.discount) / 100 ||
+                      []
+                  )}{" "}
+                  TK
                 </span>
                 <Link
                   to={`/products/${item._id}`}

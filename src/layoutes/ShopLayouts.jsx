@@ -7,121 +7,94 @@ const ShopLayouts = () => {
   const [sortOption, setSortOption] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const handleFilterToggle = () => setIsFilterOpen(!isFilterOpen);
-
-  const handleSortChange = (value) => setSortOption(value);
-
   const handleCategoryChange = (cat) => {
     setSelectedCategories((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+      prev.includes(cat)
+        ? prev.filter((c) => c !== cat)
+        : [...prev, cat]
     );
   };
 
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row bg-base-100 relative">
-      {/* Mobile Filter Header */}
-      <div className="lg:hidden flex justify-between items-center p-4 border-b shadow-sm">
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      {/* Mobile header */}
+      <div className="lg:hidden flex justify-between p-4 border-b sticky top-15 bg-white z-30">
         <h2 className="text-xl font-semibold text-green-600">Coconut Shop</h2>
-        <button
-          onClick={handleFilterToggle}
-          className="btn btn-ghost btn-circle text-green-600"
-        >
-          <Filter className="w-6 h-6" />
+        <button onClick={() => setIsFilterOpen(true)}>
+          <Filter />
         </button>
       </div>
 
-      {/* Filter Sidebar */}
-      <div
-        className={`fixed lg:static top-20 left-0 h-full w-64 bg-green-50 shadow-lg z-40 transform transition-transform duration-300 ease-in-out overflow-y-auto 
-        ${
-          isFilterOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0`}
+      {/* Sidebar */}
+      <aside
+        className={`fixed lg:sticky top-15 w-64 bg-green-50 h-full z-40 transform transition-transform 
+        ${isFilterOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 `}
       >
-        <div className="p-4 border-b flex justify-between items-center lg:hidden sticky top-0 bg-green-50">
-          <h3 className="font-semibold text-green-700 text-lg">Filters</h3>
-          <button
-            onClick={handleFilterToggle}
-            className="btn btn-sm btn-circle btn-outline text-green-600"
-          >
-            ✕
-          </button>
-        </div>
-
-        <div className="p-6 space-y-6">
-          {/* Sort */}
+        <div className="p-6 space-y-6 ">
+          {/* SORT */}
           <div>
-            <h3 className="text-lg font-semibold mb-2 text-green-700">
-              Sort By Price
-            </h3>
-            <div className="space-y-2">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="priceSort"
-                  value="lowToHigh"
-                  checked={sortOption === "lowToHigh"}
-                  onChange={(e) => handleSortChange(e.target.value)}
-                  className="radio radio-sm"
-                />
-                <span>Low → High</span>
-              </label>
+            <h3 className="font-semibold mb-2">Sort by Price</h3>
 
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="priceSort"
-                  value="highToLow"
-                  checked={sortOption === "highToLow"}
-                  onChange={(e) => handleSortChange(e.target.value)}
-                  className="radio radio-sm"
-                />
-                <span>High → Low</span>
-              </label>
-            </div>
+            <label className="flex gap-2">
+              <input
+                type="radio"
+                name="sort"
+                value="price_asc"   
+                checked={sortOption === "price_asc"}
+                onChange={(e) => setSortOption(e.target.value)}
+              />
+              Low → High
+            </label>
+
+            <label className="flex gap-2">
+              <input
+                type="radio"
+                name="sort"
+                value="price_desc" 
+                checked={sortOption === "price_desc"}
+                onChange={(e) => setSortOption(e.target.value)}
+              />
+              High → Low
+            </label>
           </div>
 
-          {/* Category */}
+          {/* CATEGORY */}
           <div>
-            <h3 className="text-lg font-semibold mb-2 text-green-700">
-              Category
-            </h3>
+            <h3 className="font-semibold mb-2">Category</h3>
 
-            <div className="space-y-2">
-              {[
-                "Fresh Coconuts",
-                "Coconut Oil",
-                "Dry Coconuts",
-                "Cosmetics",
-                "Food",
-                "Other",
-              ].map((cat) => (
-                <label key={cat} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(cat)}
-                    onChange={() => handleCategoryChange(cat)}
-                    className="checkbox checkbox-sm"
-                  />
-                  <span>{cat}</span>
-                </label>
-              ))}
-            </div>
+            {[
+              "Fresh Coconuts",
+              "Oil",
+              "Dry Coconuts",
+              "Cosmetics",
+              "Food",
+              "Other",
+            ].map((cat) => (
+              <label key={cat} className="flex gap-2">
+                <input
+                  type="checkbox"
+                  checked={selectedCategories.includes(cat)}
+                  onChange={() => handleCategoryChange(cat)}
+                />
+                {cat}
+              </label>
+            ))}
           </div>
         </div>
-      </div>
+      </aside>
 
-      {/* Overlay for small screen */}
+      {/* Overlay */}
       {isFilterOpen && (
         <div
-          onClick={handleFilterToggle}
-          className="fixed inset-0 bg-black bg-opacity-40 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/40 lg:hidden"
+          onClick={() => setIsFilterOpen(false)}
         />
       )}
 
-      {/* Main Outlet */}
-      <div className="flex-1 p-4 lg:p-8 overflow-hidden">
+      {/* Products */}
+      <main className="flex-1 p-6">
         <Outlet context={{ sortOption, selectedCategories }} />
-      </div>
+      </main>
     </div>
   );
 };

@@ -8,56 +8,72 @@ const Products = () => {
   const axiosPublic = useAxios();
   const { addToCart } = useCart();
 
-  const { sortOption, selectedCategories, productsRefreshFlag } =
-    useOutletContext() || {};
+  const {
+    sortOption = "",
+    selectedCategories = [],
+    productsRefreshFlag,
+  } = useOutletContext() || {};
+
+  // console.log(sortOption, selectedCategories)
 
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  console.log(products);
-
-  const observer = useRef();
+  const observer = useRef(null);
   const isFetching = useRef(false);
 
-  const loadProducts = async () => {
-    if (!hasMore || isFetching.current) return;
+  // 🔥 MAIN FETCH FUNCTION
+  const loadProducts = useCallback(
+    async (reset = false) => {
+      if (isFetching.current || (!hasMore && !reset)) return;
 
-    try {
-      isFetching.current = true;
-      setLoading(true);
+      try {
+        isFetching.current = true;
+        setLoading(true);
 
-      const categoryQuery =
-        selectedCategories.length > 0
-          ? `&category=${selectedCategories.join(",")}`
-          : "";
-      const sortQuery = sortOption ? `&sort=${sortOption}` : "";
+        const categoryQuery =
+          selectedCategories.length > 0
+            ? `&category=${selectedCategories.join(",")}`
+            : "";
 
-      const res = await axiosPublic.get(
-        `/products?page=${page}&limit=10${categoryQuery}${sortQuery}`
-      );
+        const sortQuery = sortOption ? `&sort=${sortOption}` : "";
 
-      setProducts((prev) => [...prev, ...res.data.products]);
-      setHasMore(res.data.hasMore);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      isFetching.current = false;
-      setLoading(false);
-    }
-  };
+        const currentPage = reset ? 1 : page;
 
+        const res = await axiosPublic.get(
+          `/products?page=${currentPage}&limit=10${categoryQuery}${sortQuery}`
+        );
+
+        setProducts((prev) =>
+          reset ? res.data.products : [...prev, ...res.data.products]
+        );
+
+        setHasMore(res.data.hasMore);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        isFetching.current = false;
+        setLoading(false);
+      }
+    },
+    [page, sortOption, selectedCategories, hasMore]
+  );
+
+  // 📌 PAGE CHANGE → LOAD MORE
   useEffect(() => {
     loadProducts();
   }, [page]);
 
+  // 🔁 FILTER / SORT CHANGE → RESET + FETCH
   useEffect(() => {
-    setProducts([]);
     setPage(1);
     setHasMore(true);
+    loadProducts(true);
   }, [sortOption, selectedCategories, productsRefreshFlag]);
 
+  // 👀 INTERSECTION OBSERVER
   const lastElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -88,17 +104,15 @@ const Products = () => {
             <div
               key={product._id}
               ref={isLast ? lastElementRef : null}
-              className="bg-white shadow-md rounded-2xl overflow-hidden border hover:shadow-lg transition-all duration-300 flex flex-col relative"
+              className="bg-white shadow-md rounded-2xl overflow-hidden border flex flex-col relative"
             >
-              {/* Discount Badge */}
               {product.discount > 0 && (
                 <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
                   -{product.discount}%
                 </div>
               )}
 
-              {/* Product Image */}
-              <Link to={`/products/${product._id}`} className="overflow-hidden">
+              <Link to={`/products/${product._id}`}>
                 <img
                   src={product.img}
                   alt={product.name}
@@ -107,65 +121,58 @@ const Products = () => {
               </Link>
 
               <div className="p-4 flex flex-col flex-grow">
-                <p className="text-xs font-semibold text-green-600 mb-1">
+                <p className="text-xs font-semibold text-green-600">
                   {product.category}
                 </p>
 
                 <Link to={`/products/${product._id}`}>
-                  <h2 className="text-lg font-semibold text-gray-800 hover:text-green-600 duration-200">
+                  <h2 className="text-lg font-semibold hover:text-green-600">
                     {product.name}
                   </h2>
                 </Link>
 
-                {/* Price & Original Price */}
                 <div className="mt-2 flex items-center gap-2">
                   <span className="text-green-700 font-bold text-lg">
                     ৳
                     {Math.round(
-                      product.price - (product.price * product.discount) / 100
-                    ) || []}
+                      product.price -
+                        (product.price * product.discount) / 100
+                    )}
                   </span>
+
                   {product.discount > 0 && (
-                    <span className="text-gray-500 line-through text-sm">{`৳${Math.round(
-                      product.price
-                    )}`}</span>
+                    <span className="line-through text-sm text-gray-500">
+                      ৳{product.price}
+                    </span>
                   )}
                 </div>
 
-                {/* Stock */}
-
-                {/* Weight & Quantity (side by side) */}
                 <div className="flex justify-between mt-2 text-sm text-gray-600">
                   <span>
-                    Weight:{" "}
-                    {product.weight > 0 && (product.weight / 1000).toFixed(2)}{" "}
-                    kg
+                    Weight: {(product.weight / 1000).toFixed(2)} kg
                   </span>
-                  <span>
-                    <p
-                      className={`mt-1 text-sm ${
-                        product.stock > 0 ? "text-green-600" : "text-red-500"
-                      }`}
-                    >
-                      {product.stock > 0
-                        ? `In stock: ${product.stock}`
-                        : "Out of Stock"}
-                    </p>
+                  <span
+                    className={
+                      product.stock > 0 ? "text-green-600" : "text-red-500"
+                    }
+                  >
+                    {product.stock > 0
+                      ? `In stock: ${product.stock}`
+                      : "Out of stock"}
                   </span>
                 </div>
 
-                {/* Add to Cart Button */}
                 <button
                   onClick={() => addToCart(product)}
                   disabled={product.stock === 0}
-                  className={`mt-auto flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-white font-medium duration-300 ${
+                  className={`mt-auto py-2 rounded-lg text-white ${
                     product.stock === 0
-                      ? "bg-gray-400 cursor-not-allowed"
+                      ? "bg-gray-400"
                       : "bg-green-600 hover:bg-green-700"
                   }`}
                 >
-                  <ShoppingCart className="w-4 h-4" />
-                  {product.stock === 0 ? "Unavailable" : "Add to Cart"}
+                  <ShoppingCart className="inline w-4 h-4 mr-1" />
+                  Add to Cart
                 </button>
               </div>
             </div>
@@ -174,13 +181,15 @@ const Products = () => {
       </div>
 
       {loading && (
-        <p className="text-center py-6 text-green-700 font-medium">
+        <p className="text-center py-6 text-green-700">
           Loading more products...
         </p>
       )}
 
       {!hasMore && products.length > 0 && (
-        <p className="text-center py-6 text-gray-500">No more products 😌</p>
+        <p className="text-center py-6 text-gray-500">
+          No more products 😌
+        </p>
       )}
     </div>
   );

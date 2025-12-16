@@ -23,22 +23,18 @@ const Navbar = () => {
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
-        <Link
-  to="/"
-  className="flex items-center gap-2 text-2xl font-bold"
->
-  {/* Logo Image */}
-  <img
-    src="https://i.ibb.co.com/XZCMDGB5/logo.jpg" // replace with your logo URL
-    alt="CoconutBD Logo"
-    className="w-10 h-10 object-contain"
-  />
+        <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
+          {/* Logo Image */}
+          <img
+            src="https://i.ibb.co.com/XZCMDGB5/logo.jpg" // replace with your logo URL
+            alt="CoconutBD Logo"
+            className="w-10 h-10 object-contain"
+          />
 
-  {/* Text */}
-  <span className="text-green-600 hidden md:block">Coconut</span>
-  <span className="text-gray-700 hidden md:block">BD</span>
-</Link>
-
+          {/* Text */}
+          <span className="text-green-600 hidden md:block">Coconut</span>
+          <span className="text-gray-700 hidden md:block">BD</span>
+        </Link>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex gap-6 text-gray-700 font-medium">
@@ -48,7 +44,9 @@ const Navbar = () => {
                 to={link.path}
                 className={({ isActive }) =>
                   `duration-200 ${
-                    isActive ? "text-green-600 font-semibold" : "hover:text-green-600"
+                    isActive
+                      ? "text-green-600 font-semibold"
+                      : "hover:text-green-600"
                   }`
                 }
               >
@@ -70,16 +68,16 @@ const Navbar = () => {
 
           {/* Cart */}
           <button
-                onClick={toggleCart}
-                 className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
-           >
-        <ShoppingCart className="w-5 h-5 text-gray-700" />
-        {cartCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-            {cartCount}
-          </span>
-        )}
-      </button>
+            onClick={toggleCart}
+            className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
+          >
+            <ShoppingCart className="w-5 h-5 text-gray-700" />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </button>
 
           {/* Profile */}
           <div className="relative">
