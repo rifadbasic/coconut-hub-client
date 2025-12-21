@@ -32,7 +32,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/shop/new-arivle",
-            element: <NewArivle/>,
+            element: <NewArivle />,
           },
         ],
       },
@@ -42,7 +42,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/our-policy",
-        element: <OurPolicy/>,
+        element: <OurPolicy />,
       },
       {
         path: "/products/:id",
@@ -50,21 +50,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        element: <Checkout/>,
+        element: <Checkout />,
       },
       {
         path: "/final-checkout",
-        element: <FinalCheckout/>,
+        element: <FinalCheckout />,
       },
       {
         path: "login",
-        element: <LogIn/>,
+        element: <LogIn />,
       },
       {
-        
         path: "register",
-        element: <Register/>,
-      
+        element: <Register />,
       }
     ],
   },

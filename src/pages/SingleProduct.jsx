@@ -102,7 +102,7 @@ const SingleProduct = () => {
             {product.name}
           </h1>
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-2xl font-semibold text-green-700">
+            <span className="text-2xl font-semibold text-[var(--secondary-color)]">
               ৳{" "}
               {Math.round(
                 product.price - (product.price * product.discount) / 100 || []
@@ -112,21 +112,28 @@ const SingleProduct = () => {
             <span className="text-gray-500 line-through">৳{product.price}</span>
           </div>
 
-          <p
+          {/* add country name */}
+          <div className="mb-6">
+            <span className="text-sm text-gray-600">
+               Made in <span className="text-[var(--secondary-color)] font-medium">{product.country}</span>
+            </span>
+          </div>
+
+          {/* <p
             className={`mb-4 text-sm ${
-              product.stock > 0 ? "text-green-600" : "text-red-500"
+              product.stock > 0 ? "text-[var(--secondary-color)]" : "text-red-500"
             }`}
           >
             {product.stock > 0 ? `In stock: ${product.stock}` : "Out of Stock"}
-          </p>
+          </p> */}
 
           <button
             onClick={() => addToCart(product)}
-            disabled={product.quantity === 0}
+            disabled={product.stock === ""}
             className={`flex items-center gap-2 py-3 px-6 rounded-lg text-white font-medium transition ${
-              product.quantity === 0
+              product.stock === ""
                 ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700"
+                : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] duration-200"
             }`}
           >
             <ShoppingCart className="w-5 h-5" />
@@ -142,7 +149,7 @@ const SingleProduct = () => {
       {/* Product Details */}
       <div className="mt-12">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          📝 Product Details
+         Product Details
         </h2>
         <p className="text-gray-600">{product.shortDesc}</p>
       </div>
@@ -150,7 +157,7 @@ const SingleProduct = () => {
       {/* ================= Similar Products ================= */}
       {similarProducts.length > 0 && (
         <div className="mt-14">
-          <h2 className="text-2xl font-semibold mb-6">🥥 Similar Products</h2>
+          <h2 className="text-2xl font-semibold mb-6">Similar Products</h2>
 
           <Carousel
             responsive={responsive}
@@ -175,7 +182,7 @@ const SingleProduct = () => {
                 <div className="p-4 flex flex-col flex-1">
                   <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
 
-                  <span className="text-green-700 font-bold mb-3">
+                  <span className="text-[var(--secondary-color)] font-bold mb-3">
                     ৳{" "}
                     {Math.round(
                       item.price - (item.price * item.discount) / 100
@@ -185,7 +192,7 @@ const SingleProduct = () => {
 
                   <Link
                     to={`/products/${item._id}`}
-                    className="mt-auto text-center bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+                    className="mt-auto text-center bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-white py-2 rounded-lg"
                   >
                     View Details
                   </Link>

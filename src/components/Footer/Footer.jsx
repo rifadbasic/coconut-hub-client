@@ -35,7 +35,7 @@ const Footer = () => {
             />
             <button
               type="submit"
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold  hover:text-green-500 transition"
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg font-semibold  hover:text-[var(--secondary-color)] transition"
             >
               Submit
             </button>
@@ -75,7 +75,7 @@ const Footer = () => {
               href="https://facebook.com"
               target="_blank"
               rel="noreferrer"
-              className="p-2 bg-white text-green-700 rounded-full hover:bg-green-100 transition"
+              className="p-2 bg-white text-[var(--secondary-color)] rounded-full hover:bg-[var(--bg-color)] transition"
             >
               <Facebook size={20} />
             </a>
@@ -83,7 +83,7 @@ const Footer = () => {
               href="https://instagram.com"
               target="_blank"
               rel="noreferrer"
-              className="p-2 bg-white text-green-700 rounded-full hover:bg-green-100 transition"
+              className="p-2 bg-white text-[var(--secondary-color)] rounded-full hover:bg-[var(--bg-color)] transition"
             >
               <Instagram size={20} />
             </a>
@@ -91,7 +91,7 @@ const Footer = () => {
               href="https://twitter.com"
               target="_blank"
               rel="noreferrer"
-              className="p-2 bg-white text-green-700 rounded-full hover:bg-green-100 transition"
+              className="p-2 bg-white text-[var(--secondary-color)] rounded-full hover:bg-[var(--bg-color)] transition"
             >
               <Twitter size={20} />
             </a>
@@ -99,7 +99,7 @@ const Footer = () => {
               href="https://youtube.com"
               target="_blank"
               rel="noreferrer"
-              className="p-2 bg-white text-green-700 rounded-full hover:bg-green-100 transition"
+              className="p-2 bg-white text-[var(--secondary-color)] rounded-full hover:bg-green-100 transition"
             >
               <Youtube size={20} />
             </a>

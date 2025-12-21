@@ -27,7 +27,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-white to-amber-100 px-4">
       <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
-        <h2 className="text-2xl font-bold text-center text-green-700 mb-6">
+        <h2 className="text-2xl font-bold text-center text-[var(--secondary-color)] mb-6">
           Welcome Back 👋
         </h2>
 
@@ -44,7 +44,7 @@ const Login = () => {
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
             />
           </div>
 
@@ -61,7 +61,7 @@ const Login = () => {
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="w-full border rounded-lg px-3 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
               />
               <button
                 type="button"
@@ -76,7 +76,7 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg font-semibold transition"
+            className="w-full bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-white py-2 rounded-lg font-semibold transition"
           >
             Login
           </button>
@@ -107,7 +107,7 @@ const Login = () => {
           Don't have an account?{" "}
           <button
             onClick={() => navigate("/register")}
-            className="text-green-600 hover:underline font-semibold"
+            className="text-[var(--secondary-color)] hover:underline font-semibold"
           >
             Sign Up
           </button>

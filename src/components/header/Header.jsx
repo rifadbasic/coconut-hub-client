@@ -29,7 +29,7 @@ const Header = () => {
             confidence.
           </p>
 
-          <Link to="/shop">
+          <Link to="/shop/products">
             <button className="mt-4 bg-[var(--secondary-color)] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[var(--primary-color)] transition">
               Shop Now
             </button>

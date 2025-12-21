@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Outlet, Link } from "react-router";
+import { Outlet, NavLink } from "react-router";
 import { Filter, Menu, X } from "lucide-react";
 
 const ShopLayouts = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false); // ✅ NEW
+  const [isNavOpen, setIsNavOpen] = useState(false);
   const [sortOption, setSortOption] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -14,18 +14,25 @@ const ShopLayouts = () => {
     );
   };
 
+  /* ✅ ACTIVE LINK STYLE */
+  const navLinkClass = ({ isActive }) =>
+    `transition-colors ${
+      isActive
+        ? "text-[var(--secondary-color)] font-semibold border-b-2 border-[var(--secondary-color)]"
+        : "hover:text-[var(--secondary-color)]"
+    }`;
+
   return (
     <div className="min-h-screen flex flex-col">
-      {/* ================= MAIN CONTENT ================= */}
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside
-          className={`fixed lg:sticky top-16 w-64 bg-green-50 h-full z-60 transform transition-transform 
+          className={`fixed lg:sticky top-16 w-64 bg-[var(--bg-color)] h-full z-60 transform transition-transform 
           ${
             isFilterOpen ? "translate-x-0" : "-translate-x-full"
           } lg:translate-x-0`}
         >
-          <div className="p-6 space-y-6 ">
+          <div className="p-6 space-y-6">
             <h1 className="text-2xl font-bold text-center text-[var(--secondary-color)] mt-4">
               Filter Products
             </h1>
@@ -35,10 +42,10 @@ const ShopLayouts = () => {
             >
               <X />
             </button>
+
             {/* SORT */}
             <div>
               <h3 className="font-semibold mb-2">Sort by Price</h3>
-
               <label className="flex gap-2">
                 <input
                   type="radio"
@@ -66,12 +73,15 @@ const ShopLayouts = () => {
             <div>
               <h3 className="font-semibold mb-2">Category</h3>
               {[
-                "Fresh Coconuts",
-                "Oil",
-                "Dry Coconuts",
+                "Hair Care",
+                "Skin Care",
+                "Body Care",
+                "Face Care",
+                "Eyes Care",
+                "Oral Care",
                 "Cosmetics",
-                "Food",
-                "Other",
+                "Accessories",
+                "Wearables",
               ].map((cat) => (
                 <label key={cat} className="flex gap-2">
                   <input
@@ -95,46 +105,32 @@ const ShopLayouts = () => {
         )}
 
         {/* Products */}
-        <main className="flex-1 ">
-          {/* ✅ NEW NAVBAR */}
-          <nav className="sticky top-15  z-50 bg-white shadow-md">
+        <main className="flex-1">
+          {/* NAVBAR */}
+          <nav className="sticky top-16 z-40 bg-white shadow-md">
             <div className="max-w-7xl mx-auto px-4 lg:py-6 flex items-center justify-end">
-              {/* Brand */}
-
               {/* Desktop Nav */}
               <div className="hidden lg:flex gap-6 font-medium">
-                <Link
-                  to="/shop/products"
-                  className="hover:text-[var(--secondary-color)]"
-                >
+                <NavLink to="/shop/products" className={navLinkClass}>
                   All Products
-                </Link>
-                <Link
-                  to="/shop/new-arivle"
-                  className="hover:text-[var(--secondary-color)]"
-                >
+                </NavLink>
+                <NavLink to="/shop/new-arivle" className={navLinkClass}>
                   New Arrivals
-                </Link>
-                <Link
-                  to="/shop/combo"
-                  className="hover:text-[var(--secondary-color)]"
-                >
+                </NavLink>
+                <NavLink to="/shop/combo" className={navLinkClass}>
                   Combos
-                </Link>
+                </NavLink>
               </div>
             </div>
+
             {/* Mobile Icons */}
             <div className="lg:hidden flex justify-between mx-4 py-3">
-              <div>
-                <button onClick={() => setIsNavOpen(true)}>
-                  <Menu />
-                </button>
-              </div>
-              <div>
-                <button onClick={() => setIsFilterOpen(true)}>
-                  <Filter />
-                </button>
-              </div>
+              <button onClick={() => setIsNavOpen(true)}>
+                <Menu />
+              </button>
+              <button onClick={() => setIsFilterOpen(true)}>
+                <Filter />
+              </button>
             </div>
 
             {/* Mobile Nav Drawer */}
@@ -152,38 +148,32 @@ const ShopLayouts = () => {
                     </button>
                   </div>
 
-                  <Link
+                  <NavLink
                     to="/shop/products"
                     onClick={() => setIsNavOpen(false)}
-                    className="block hover:text-[var(--secondary-color)]"
+                    className={navLinkClass}
                   >
                     All Products
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     to="/shop/new-arivle"
                     onClick={() => setIsNavOpen(false)}
-                    className="block hover:text-[var(--secondary-color)]"
+                    className={navLinkClass}
                   >
                     New Arrivals
-                  </Link>
-                  <Link
+                  </NavLink>
+                  <NavLink
                     to="/shop/combo"
                     onClick={() => setIsNavOpen(false)}
-                    className="block hover:text-[var(--secondary-color)]"
+                    className={navLinkClass}
                   >
                     Combos
-                  </Link>
-                  <Link
-                    to="/shop/offers"
-                    onClick={() => setIsNavOpen(false)}
-                    className="block hover:text-[var(--secondary-color)]"
-                  >
-                    Offers
-                  </Link>
+                  </NavLink>
                 </div>
               </div>
             )}
           </nav>
+
           <div className="p-6">
             <Outlet context={{ sortOption, selectedCategories }} />
           </div>

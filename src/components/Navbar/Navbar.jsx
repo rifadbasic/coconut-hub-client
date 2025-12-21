@@ -3,6 +3,7 @@ import { NavLink, Link } from "react-router";
 import { Search, ShoppingCart, User, Menu, X } from "lucide-react";
 import "./navbar.css";
 import { useCart } from "../../context/CartContext.jsx";
+import SearchBox from "../SearchBox.jsx";
 
 const Navbar = () => {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -20,7 +21,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
+    <nav className="bg-base-300 shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
@@ -32,9 +33,14 @@ const Navbar = () => {
           />
 
           {/* Text */}
-          <span className="text-[var(--secondary-color)] hidden md:block">Beauty </span>
+          <span className="text-[var(--secondary-color)] hidden md:block">
+            Beauty{" "}
+          </span>
           <span className="text-[var(--text-color)] hidden md:block">&</span>
-          <span className="text-[var(--secondary-color)] hidden md:block"> Care</span>
+          <span className="text-[var(--secondary-color)] hidden md:block">
+            {" "}
+            Care
+          </span>
         </Link>
 
         {/* Desktop Menu */}
@@ -74,7 +80,7 @@ const Navbar = () => {
           >
             <ShoppingCart className="w-5 h-5 text-gray-700" />
             {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-green-600 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-[var(--primary-color)] text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                 {cartCount}
               </span>
             )}
@@ -132,15 +138,8 @@ const Navbar = () => {
       {/* Search bar below navbar */}
       {searchOpen && (
         <div className="bg-[var(--bg-color)] py-3 px-4 shadow-inner animate-fadeIn">
-          <div className="max-w-7xl mx-auto flex items-center gap-2">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="w-full p-2 border border-[var(--bg-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
-            />
-            <button className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-md hover:bg-[var(--secondary-color)]">
-              Search
-            </button>
+          <div className="max-w-7xl mx-auto">
+            <SearchBox onClose={() => setSearchOpen(false)} />
           </div>
         </div>
       )}
