@@ -92,8 +92,8 @@ const Products = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4">
-      <h1 className="text-3xl font-bold text-center text-green-700 bg-amber-300 p-4 mb-10 rounded-xl">
-        🥥 Our Coconut Products
+      <h1 className="text-3xl font-bold text-center text-[var(--secondary-color)]  p-4 mb-10 rounded-xl">
+        All Products
       </h1>
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

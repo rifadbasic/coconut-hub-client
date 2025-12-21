@@ -3,13 +3,14 @@ import MainLayouts from "../layoutes/MainLayouts";
 import Products from "../pages/Shop/Products";
 import ShopLayouts from "../layoutes/ShopLayouts";
 import Home from "../pages/Home";
-import Review from "../pages/Review";
+import OurPolicy from "../pages/OurPolicy";
 import About from "../pages/About";
 import SingleProduct from "../pages/SingleProduct";
 import Checkout from "../pages/checkout/Checkout";
 import FinalCheckout from "../pages/checkout/FinalCheckout";
 import LogIn from "../pages/signup/LogIn";
 import Register from "../pages/signup/Register";
+import NewArivle from "../pages/NewArivle";
 
 const router = createBrowserRouter([
   {
@@ -26,8 +27,12 @@ const router = createBrowserRouter([
         element: <ShopLayouts />,
         children: [
           {
-            path: "/shop",
+            path: "/shop/products",
             element: <Products />,
+          },
+          {
+            path: "/shop/new-arivle",
+            element: <NewArivle/>,
           },
         ],
       },
@@ -36,8 +41,8 @@ const router = createBrowserRouter([
         element: <About />,
       },
       {
-        path: "/review",
-        element: <Review/>,
+        path: "/our-policy",
+        element: <OurPolicy/>,
       },
       {
         path: "/products/:id",

@@ -3,6 +3,25 @@ import { useCart } from "../context/CartContext";
 import { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
 import useAxios from "../hooks/useAxios";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3,
+    partialVisibilityGutter: 40, // this is needed to tell the amount of px that should be visible.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2,
+    partialVisibilityGutter: 30, // this is needed to tell the amount of px that should be visible.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    partialVisibilityGutter: 30, // this is needed to tell the amount of px that should be visible.
+  },
+};
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -128,46 +147,52 @@ const SingleProduct = () => {
         <p className="text-gray-600">{product.shortDesc}</p>
       </div>
 
-      {/* Similar Products */}
+      {/* ================= Similar Products ================= */}
       {similarProducts.length > 0 && (
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-6">
-            🥥 Similar Products
-          </h2>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14">
+          <h2 className="text-2xl font-semibold mb-6">🥥 Similar Products</h2>
+
+          <Carousel
+            responsive={responsive}
+            partialVisible
+            arrows
+            containerClass="pb-6"
+            itemClass="px-3"
+          >
             {similarProducts.map((item) => (
               <div
                 key={item._id}
-                className="bg-white rounded-xl border shadow hover:shadow-lg transition p-4 flex flex-col"
+                className="h-full bg-white border rounded-xl shadow hover:shadow-lg transition flex flex-col"
               >
-                <Link
-                  to={`/products/${item._id}`}
-                  className="overflow-hidden rounded-md"
-                >
+                <Link to={`/products/${item._id}`}>
                   <img
                     src={item.img}
                     alt={item.name}
-                    className="w-full h-48 object-cover hover:scale-105 duration-300"
+                    className="w-full h-48 object-cover rounded-t-xl"
                   />
                 </Link>
-                <h3 className="mt-3 text-lg font-semibold">{item.name}</h3>
-                <span className="text-green-700 font-bold">
-                  ৳{" "}
-                  {Math.round(
-                    item.price - (item.price * item.discount) / 100 ||
-                      []
-                  )}{" "}
-                  TK
-                </span>
-                <Link
-                  to={`/products/${item._id}`}
-                  className="mt-auto inline-block bg-green-600 hover:bg-green-700 text-white text-center py-2 rounded-lg mt-3 transition"
-                >
-                  View Details
-                </Link>
+
+                <div className="p-4 flex flex-col flex-1">
+                  <h3 className="text-lg font-semibold mb-1">{item.name}</h3>
+
+                  <span className="text-green-700 font-bold mb-3">
+                    ৳{" "}
+                    {Math.round(
+                      item.price - (item.price * item.discount) / 100
+                    )}{" "}
+                    TK
+                  </span>
+
+                  <Link
+                    to={`/products/${item._id}`}
+                    className="mt-auto text-center bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
             ))}
-          </div>
+          </Carousel>
         </div>
       )}
     </div>

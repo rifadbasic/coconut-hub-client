@@ -14,9 +14,9 @@ const Navbar = () => {
   // ✅ All Nav Links in one variable
   const navLinks = [
     { name: "Home", path: "/" },
-    { name: "Shop", path: "/shop" },
+    { name: "Shop", path: "/shop/products" },
     { name: "About", path: "/about" },
-    { name: "Review", path: "/review" },
+    { name: "Our Privacy", path: "/our-policy" },
   ];
 
   return (
@@ -26,14 +26,15 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
           {/* Logo Image */}
           <img
-            src="https://i.ibb.co.com/XZCMDGB5/logo.jpg" // replace with your logo URL
-            alt="CoconutBD Logo"
-            className="w-10 h-10 object-contain"
+            src="https://i.ibb.co.com/dsWYsWZS/brand-1.png" // replace with your logo URL
+            alt="Beauty Products Logo"
+            className="w-10 h-10 rounded-full object-contain"
           />
 
           {/* Text */}
-          <span className="text-green-600 hidden md:block">Coconut</span>
-          <span className="text-gray-700 hidden md:block">BD</span>
+          <span className="text-[var(--secondary-color)] hidden md:block">Beauty </span>
+          <span className="text-[var(--text-color)] hidden md:block">&</span>
+          <span className="text-[var(--secondary-color)] hidden md:block"> Care</span>
         </Link>
 
         {/* Desktop Menu */}
@@ -45,8 +46,8 @@ const Navbar = () => {
                 className={({ isActive }) =>
                   `duration-200 ${
                     isActive
-                      ? "text-green-600 font-semibold"
-                      : "hover:text-green-600"
+                      ? "text-[var(--primary-color)] font-semibold"
+                      : "hover:text-[var(--secondary-color)]"
                   }`
                 }
               >
@@ -61,7 +62,7 @@ const Navbar = () => {
           {/* Search icon */}
           <button
             onClick={() => setSearchOpen(!searchOpen)}
-            className="p-2 rounded-full hover:bg-green-100 duration-200"
+            className="p-2 rounded-full hover:bg-[var(--bg-color)] duration-200"
           >
             <Search className="w-5 h-5 text-gray-700" />
           </button>
@@ -69,7 +70,7 @@ const Navbar = () => {
           {/* Cart */}
           <button
             onClick={toggleCart}
-            className="p-2 rounded-full hover:bg-green-100 duration-200 relative"
+            className="p-2 rounded-full hover:bg-[var(--bg-color)] duration-200 relative"
           >
             <ShoppingCart className="w-5 h-5 text-gray-700" />
             {cartCount > 0 && (
@@ -83,7 +84,7 @@ const Navbar = () => {
           <div className="relative">
             <button
               onClick={() => setProfileOpen(!profileOpen)}
-              className="p-2 rounded-full hover:bg-green-100 duration-200"
+              className="p-2 rounded-full hover:bg-[var(--bg-color)] duration-200"
             >
               <User className="w-5 h-5 text-gray-700" />
             </button>
@@ -92,20 +93,20 @@ const Navbar = () => {
               <div className="absolute right-0 mt-2 bg-white border shadow-md rounded-md w-32 text-sm animate-fadeIn">
                 <Link
                   to="/profile"
-                  className="block px-4 py-2 hover:bg-green-50"
+                  className="block px-4 py-2 hover:bg-[var(--bg-color)]"
                   onClick={() => setProfileOpen(false)}
                 >
                   Profile
                 </Link>
                 <Link
                   to="/login"
-                  className="block px-4 py-2 hover:bg-green-50"
+                  className="block px-4 py-2 hover:bg-[var(--bg-color)]"
                   onClick={() => setProfileOpen(false)}
                 >
                   Login
                 </Link>
                 <button
-                  className="w-full text-left px-4 py-2 hover:bg-green-50"
+                  className="w-full text-left px-4 py-2 hover:bg-[var(--bg-color)]"
                   onClick={() => setProfileOpen(false)}
                 >
                   Logout
@@ -117,7 +118,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 rounded-md hover:bg-green-100 duration-200"
+            className="md:hidden p-2 rounded-md hover:bg-[var(--bg-color)] duration-200"
           >
             {menuOpen ? (
               <X className="w-6 h-6 text-gray-700" />
@@ -130,14 +131,14 @@ const Navbar = () => {
 
       {/* Search bar below navbar */}
       {searchOpen && (
-        <div className="bg-green-50 py-3 px-4 shadow-inner animate-fadeIn">
+        <div className="bg-[var(--bg-color)] py-3 px-4 shadow-inner animate-fadeIn">
           <div className="max-w-7xl mx-auto flex items-center gap-2">
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full p-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full p-2 border border-[var(--bg-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)]"
             />
-            <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">
+            <button className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-md hover:bg-[var(--secondary-color)]">
               Search
             </button>
           </div>
@@ -146,7 +147,7 @@ const Navbar = () => {
 
       {/* Mobile Menu Dropdown */}
       {menuOpen && (
-        <div className="md:hidden bg-green-50 border-t animate-fadeIn">
+        <div className="md:hidden bg-[var(--bg-color)] border-t animate-fadeIn">
           <ul className="flex flex-col text-center py-3 space-y-2 text-gray-700 font-medium">
             {navLinks.map((link) => (
               <li key={link.path}>
@@ -155,8 +156,8 @@ const Navbar = () => {
                   className={({ isActive }) =>
                     `block py-2 ${
                       isActive
-                        ? "text-green-600 font-semibold"
-                        : "hover:text-green-600"
+                        ? "text-[var(--primary-color)] font-semibold"
+                        : "hover:text-[var(--primary-color)]"
                     }`
                   }
                   onClick={() => setMenuOpen(false)}

@@ -7,12 +7,25 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-green-600 text-white">
+    <footer className="bg-[var(--secondary-color)] text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Left Section */}
         <div>
-          <h2 className="text-2xl font-bold mb-3">🥥 Coconut Shop</h2>
+          <div className="flex items-center gap-4 mb-2">
+            <div>
+              <img
+                src="https://i.ibb.co.com/dsWYsWZS/brand-1.png"
+                alt="logo"
+                className="w-12 h-12 rounded-full"
+              />
+            </div>
+            <div>
+              <h1 className="text-white text-xl sm:text-2xl md:text-3xl font-bold mb-2">
+                Beauty <span className="text-[var(--text-color)]">&</span> Care
+              </h1>
+            </div>
+          </div>
           <p className="text-sm mb-4">123 Coconut Street, Khulna, Bangladesh</p>
           <form className="flex flex-col sm:flex-row items-center gap-2">
             <input
@@ -97,7 +110,7 @@ const Footer = () => {
       {/* Bottom Bar */}
       <div className="border-t border-white/30 text-center py-4 text-sm">
         <p>
-          © {currentYear} Coconut Shop | Created by{" "}
+          © {currentYear} Beauty & Care | Created by{" "}
           <span className="font-semibold">rifadbasic</span>
         </p>
       </div>
