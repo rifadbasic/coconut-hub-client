@@ -27,7 +27,7 @@ const Navbar = () => {
         <Link to="/" className="flex items-center gap-2 text-2xl font-bold">
           {/* Logo Image */}
           <img
-            src="https://i.ibb.co.com/dsWYsWZS/brand-1.png" // replace with your logo URL
+            src={`${import.meta.env.VITE_Logo_URL}`} // replace with your logo URL
             alt="Beauty Products Logo"
             className="w-10 h-10 rounded-full object-contain"
           />
@@ -96,7 +96,7 @@ const Navbar = () => {
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 bg-white border shadow-md rounded-md w-32 text-sm animate-fadeIn">
+              <div className="absolute right-0 z-50 mt-2 bg-white border shadow-md rounded-md w-32 text-sm animate-fadeIn">
                 <Link
                   to="/profile"
                   className="block px-4 py-2 hover:bg-[var(--bg-color)]"

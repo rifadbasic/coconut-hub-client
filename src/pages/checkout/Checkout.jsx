@@ -1,6 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { toast, Bounce } from "react-toastify";
 
 const Checkout = () => {
   const { cartItems, totalPrice } = useCart();
@@ -26,8 +27,18 @@ const Checkout = () => {
   const finalTotal = totalPrice + deliveryCharge - discount;
 
   const handleProcess = () => {
-    if (deliveryCharge === 0) {
-      alert("❌ Please select a delivery location before proceeding!");
+    if (deliveryCharge === 0 || finalTotal <= 0) {
+      toast.error("Please select a delivery method", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      }) ;
       return; // Stop navigation
     }
 
@@ -45,7 +56,7 @@ const Checkout = () => {
     <div className="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Left - Cart Summary */}
       <div>
-        <h2 className="text-2xl font-bold text-green-700 mb-4">🛍️ Your Cart</h2>
+        <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">🛍️ Your Cart</h2>
         <div className="space-y-4">
           {cartItems.map((item) => (
             <div
@@ -59,7 +70,7 @@ const Checkout = () => {
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-800">{item.name}</h3>
-                <p className="text-green-700 font-bold">
+                <p className="text-[var(--secondary-color)] font-bold">
                   ৳
                   {Math.round(item.price - (item.price * item.discount) / 100) || []}
                   × {item.quantity} = ৳
@@ -76,7 +87,7 @@ const Checkout = () => {
 
       {/* Right - Options */}
       <div>
-        <h2 className="text-2xl font-bold text-green-700 mb-4">
+        <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">
           🚚 Delivery & Coupon
         </h2>
 
@@ -118,13 +129,13 @@ const Checkout = () => {
             />
             <button
               onClick={applyCoupon}
-              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg"
+              className="bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg"
             >
               Apply
             </button>
           </div>
           {discount > 0 && (
-            <p className="text-green-600 mt-2">
+            <p className="text-[var(--secondary-color)] mt-2">
               Coupon applied! You saved ৳{Math.round(discount)}
             </p>
           )}
@@ -144,7 +155,7 @@ const Checkout = () => {
             <span>Discount:</span>
             <span>- ৳{Math.round(discount)}</span>
           </div>
-          <div className="flex justify-between font-bold text-green-700 text-lg">
+          <div className="flex justify-between font-bold text-[var(--secondary-color)] text-lg">
             <span>Total:</span>
             <span>৳{Math.round(finalTotal)}</span>
           </div>
@@ -156,7 +167,7 @@ const Checkout = () => {
           className={`w-full mt-6 py-3 rounded-lg text-white font-semibold ${
             cartItems.length === 0
               ? "bg-gray-400 cursor-not-allowed"
-              : "bg-green-600 hover:bg-green-700"
+              : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)]"
           }`}
         >
           Process

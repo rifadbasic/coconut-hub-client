@@ -12,7 +12,6 @@ const CartSidebar = () => {
     decreaseQty,
     removeFromCart,
     totalPrice,
-    totalWeight,
   } = useCart();
 
   const navigate = useNavigate();
@@ -47,7 +46,7 @@ const CartSidebar = () => {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-4 border-b">
-              <h2 className="text-lg font-bold text-green-700">Your Cart 🛒</h2>
+              <h2 className="text-lg font-bold text-[var(--secondary-color)]">Your Cart 🛒</h2>
               <button onClick={toggleCart}>
                 <X className="w-5 h-5 text-gray-700" />
               </button>
@@ -69,20 +68,17 @@ const CartSidebar = () => {
                       className="w-16 h-16 object-cover rounded-md"
                     />
                     <div className="flex-1">
-                      <p className="text-xs font-semibold text-green-600 mb-1">
+                      <p className="text-xs font-semibold text-[var(--secondary-color)] mb-1">
                         {item.category}
                       </p>
                       <h3 className="text-sm font-semibold">{item.name}</h3>
-                      <p className="text-green-700 font-bold">
+                      <p className="text-[var(--secondary-color)] font-bold">
                         ৳
                         {Math.round(
-                            item.price - (item.price * item.discount) / 100
-                           || []
+                          item.price - (item.price * item.discount) / 100 || []
                         ) * item.quantity}
                       </p>
-                      <p className="text-sm text-gray-500">
-                        Weight: {item.weight === 0 ? 1 : item.weight} g
-                      </p>
+                      
 
                       {/* Qty controls */}
                       <div className="flex items-center gap-2 mt-1">
@@ -107,6 +103,7 @@ const CartSidebar = () => {
                     >
                       <Trash2 className="w-4 h-4 text-red-500" />
                     </button>
+                    
                   </div>
                 ))
               )}
@@ -116,23 +113,18 @@ const CartSidebar = () => {
             <div className="p-4 border-t space-y-2">
               <div className="flex justify-between">
                 <span className="font-semibold">Total Price:</span>
-                <span className="font-bold text-green-700">
+                <span className="font-bold text-[var(--secondary-color)]">
                   ৳{Math.round(totalPrice)}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="font-semibold">Total Weight:</span>
-                <span className="font-bold text-green-700">
-                  {(totalWeight / 1000).toFixed(2)} kg
-                </span>
-              </div>
+              
               <button
                 onClick={handleCheckout}
                 disabled={cartItems.length === 0}
                 className={`w-full py-2 rounded-lg text-white font-semibold ${
                   cartItems.length === 0
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-green-600 hover:bg-green-700"
+                    : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)]"
                 }`}
               >
                 Checkout

@@ -15,7 +15,7 @@ const Footer = () => {
           <div className="flex items-center gap-4 mb-2">
             <div>
               <img
-                src="https://i.ibb.co.com/dsWYsWZS/brand-1.png"
+                src={`${import.meta.env.VITE_Logo_URL}`}
                 alt="logo"
                 className="w-12 h-12 rounded-full"
               />

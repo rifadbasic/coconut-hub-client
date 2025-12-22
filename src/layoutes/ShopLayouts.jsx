@@ -148,27 +148,29 @@ const ShopLayouts = () => {
                     </button>
                   </div>
 
-                  <NavLink
-                    to="/shop/products"
-                    onClick={() => setIsNavOpen(false)}
-                    className={navLinkClass}
-                  >
-                    All Products
-                  </NavLink>
-                  <NavLink
-                    to="/shop/new-arivle"
-                    onClick={() => setIsNavOpen(false)}
-                    className={navLinkClass}
-                  >
-                    New Arrivals
-                  </NavLink>
-                  <NavLink
-                    to="/shop/combo"
-                    onClick={() => setIsNavOpen(false)}
-                    className={navLinkClass}
-                  >
-                    Combos
-                  </NavLink>
+                  <div className="flex flex-col gap-4">
+                    <NavLink
+                      to="/shop/products"
+                      onClick={() => setIsNavOpen(false)}
+                      className={navLinkClass}
+                    >
+                      All Products
+                    </NavLink>
+                    <NavLink
+                      to="/shop/new-arivle"
+                      onClick={() => setIsNavOpen(false)}
+                      className={navLinkClass}
+                    >
+                      New Arrivals
+                    </NavLink>
+                    <NavLink
+                      to="/shop/combo"
+                      onClick={() => setIsNavOpen(false)}
+                      className={navLinkClass}
+                    >
+                      Combos
+                    </NavLink>
+                  </div>
                 </div>
               </div>
             )}

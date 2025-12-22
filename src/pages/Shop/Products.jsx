@@ -206,6 +206,7 @@ const Products = () => {
                 >
                   <ShoppingCart className="inline w-4 h-4 mr-1" />
                   Add to Cart
+                  
                 </button>
               </div>
             </div>

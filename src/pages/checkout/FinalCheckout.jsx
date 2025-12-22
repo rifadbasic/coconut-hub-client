@@ -1,8 +1,9 @@
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useCart } from "../../context/CartContext";
 import { useState } from "react";
 import useAxios from "../../hooks/useAxios";
 import { makeInvoiceHTML } from "../../components/invoice/makeInvoice";
+import { toast, Bounce } from "react-toastify";
 
 const FinalCheckout = () => {
   const { cartItems } = useCart();
@@ -12,6 +13,8 @@ const FinalCheckout = () => {
   const deliveryCharge = location.state?.deliveryCharge || 0;
   const coupon = location.state?.coupon || "";
   const axios = useAxios();
+
+  console.log(cartItems);
 
   // Generate Invoice Number
   const generateInvoiceNumber = () => {
@@ -44,7 +47,17 @@ const FinalCheckout = () => {
 
   const handleCompleteOrder = async () => {
     if (!formData.agree) {
-      return alert("You must agree with our return policy.");
+      return toast.error("Please agree to terms and conditions", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
 
     if (
@@ -53,7 +66,31 @@ const FinalCheckout = () => {
       !formData.address ||
       !formData.division
     ) {
-      return alert("Please fill in all required fields.");
+      return toast.error("Please fill in all required fields", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });;
+    }
+
+    if (cartItems.length === 0) {
+      return toast.error("Your cart is empty", {
+        position: "top-center",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: false,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });;
     }
 
     const invoiceNumber = generateInvoiceNumber();
@@ -113,7 +150,7 @@ const FinalCheckout = () => {
     <div className="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
       {/* Left: Customer Info */}
       <div>
-        <h2 className="text-2xl font-bold text-green-700 mb-4">
+        <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">
           📝 Customer Info
         </h2>
         <div className="space-y-4">
@@ -179,7 +216,7 @@ const FinalCheckout = () => {
 
       {/* Right: Payment & Policy */}
       <div>
-        <h2 className="text-2xl font-bold text-green-700 mb-4">
+        <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">
           💳 Payment & Policy
         </h2>
 
@@ -223,19 +260,30 @@ const FinalCheckout = () => {
               checked={formData.agree}
               onChange={handleChange}
             />
-            <span>I agree with the return policy</span>
+            <span>
+              I agree with the{" "}
+              <Link
+                to="/our-policy"
+                className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] font-semibold"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </span>
           </label>
         </div>
 
         <div className="border-t pt-4 mt-4">
           <div className="flex justify-between font-bold text-lg mb-4">
             <span>Total Price:</span>
-            <span className="text-green-700">৳{Math.round(finalTotal)}</span>
+            <span className="text-[var(--secondary-color)]">
+              ৳{Math.round(finalTotal)}
+            </span>
           </div>
 
           <button
             onClick={handleCompleteOrder}
-            className="w-full py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-semibold"
+            className="w-full py-3 bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] text-white rounded-lg font-semibold"
           >
             Complete Order
           </button>
