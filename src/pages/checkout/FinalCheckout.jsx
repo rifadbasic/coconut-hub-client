@@ -21,7 +21,7 @@ const FinalCheckout = () => {
     const previous = localStorage.getItem("invoiceCounter");
     const newCount = previous ? parseInt(previous) + 1 : 1;
     localStorage.setItem("invoiceCounter", newCount);
-    return `INV-cocoBD-${String(newCount).padStart(9, "0")}`;
+    return `INV-B&C-${String(newCount).padStart(9, "0")}`;
   };
 
   const [formData, setFormData] = useState({
@@ -76,7 +76,7 @@ const FinalCheckout = () => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
-      });;
+      });
     }
 
     if (cartItems.length === 0) {
@@ -90,7 +90,7 @@ const FinalCheckout = () => {
         progress: undefined,
         theme: "light",
         transition: Bounce,
-      });;
+      });
     }
 
     const invoiceNumber = generateInvoiceNumber();
@@ -98,40 +98,45 @@ const FinalCheckout = () => {
     const order = {
       invoiceNumber,
       ...formData,
-      cartItems,
-      finalTotal,
-      discount,
-      deliveryCharge,
+      cartItems: cartItems.map((item) => ({
+        _id: item._id, // productId
+        name: item.name,
+        price: Number(item.finalPrice),
+        quantity: item.quantity,
+      })),
+      finalTotal: Number(finalTotal),
+      discount: Number(discount || 0),
+      deliveryCharge: Number(deliveryCharge || 0),
       coupon,
-      status: "Pending",
+      status: "pending",
       createdAt: new Date(),
     };
 
-    console.log(order);
+    // console.log(order);
     try {
       const response = await axios.post("/orders", order);
-      // console.log(response.data);
 
-      if (response.data.success === true) {
-        // makeInvoiceHTML(formData, cartItems, finalTotal);
+      if (response.data.success) {
         const invoiceHTML = makeInvoiceHTML(order);
         const blob = new Blob([invoiceHTML], { type: "text/html" });
         const url = URL.createObjectURL(blob);
         window.open(url, "_blank");
 
-        // clear local storage after successful order
+        // 🧹 Clear cart
         localStorage.removeItem("cartItems");
         localStorage.removeItem("finalTotal");
         localStorage.removeItem("discount");
         localStorage.removeItem("deliveryCharge");
         localStorage.removeItem("coupon");
 
-        // navigate to home
         window.location.replace("/");
       }
     } catch (err) {
-      alert("Failed to place order. Please try again.");
-      console.log(err);
+      toast.error(err?.response?.data?.message || "Failed to place order", {
+        position: "top-center",
+        autoClose: 2500,
+        transition: Bounce,
+      });
     }
   };
 

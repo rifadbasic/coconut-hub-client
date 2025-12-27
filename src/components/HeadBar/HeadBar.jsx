@@ -9,7 +9,7 @@ const HeadBar = () => {
         <div className="flex items-center gap-2">
           <MapPinHouse size={18} />
           <span className="font-semibold"> Address:</span>
-          <span>22 Coconut Street, Bagerhat, Khulna</span>
+          <span>Bagerhat Sadar, Khulna, Bangladesh</span>
         </div>
 
         {/* Right side - Shop address */}
@@ -17,7 +17,7 @@ const HeadBar = () => {
         <div className="flex items-center gap-2">
           <Phone size={18} />
           <span className="font-semibold"> Contact:</span>
-          <span>+880 1712-345678</span>
+          <span>+8801765574008</span>
         </div>
       </div>
     </div>

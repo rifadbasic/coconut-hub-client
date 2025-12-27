@@ -1,10 +1,10 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Link, useOutletContext, useSearchParams } from "react-router";
 import { ShoppingCart } from "lucide-react";
-import useAxios from "../../hooks/useAxios";
-import { useCart } from "../../context/CartContext";
+import useAxios from "../hooks/useAxios";
+import { useCart } from "../context/CartContext";
 
-const Products = () => {
+const Combos = () => {
   const axiosPublic = useAxios();
   const { addToCart } = useCart();
 
@@ -50,9 +50,9 @@ const Products = () => {
           `/products?page=${currentPage}&limit=10${categoryQuery}${sortQuery}`
         );
 
-        // 🔹 Filter out disabled products
+        // 🔹 Filter: ONLY products with status "combo"
         const filteredProducts = res.data.products.filter(
-          (p) => p.status !== "disabled"
+          (p) => p.status === "combo"
         );
 
         setProducts((prev) =>
@@ -80,8 +80,8 @@ const Products = () => {
 
     axiosPublic.get(`/search?q=${query}`).then((res) => {
       if (res.data.success) {
-        // 🔹 Filter out disabled products in search
-        setProducts(res.data.products.filter((p) => p.status !== "disabled"));
+        // 🔹 Filter: ONLY products with status "combo" in search
+        setProducts(res.data.products.filter((p) => p.status === "combo"));
       }
       setLoading(false);
     });
@@ -132,79 +132,86 @@ const Products = () => {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-center mb-6 text-[var(--secondary-color)]">
-              All Products
+             All Combo Products
             </h1>
           </>
         )}
       </h1>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product, index) => {
-          const isLast = index === products.length - 1;
+      {products.length === 0 && !loading ? (
+        // 🔹 Show message when no combo products
+        <p className="text-center text-gray-500 py-6 text-lg">
+          No Combo Products
+        </p>
+      ) : (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product, index) => {
+            const isLast = index === products.length - 1;
 
-          return (
-            <div
-              key={product._id}
-              ref={!isSearching && isLast ? lastElementRef : null}
-              className="bg-white shadow-md rounded-2xl overflow-hidden border flex flex-col relative"
-            >
-              {product.discount > 0 && (
-                <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-                  -{product.discount}%
-                </div>
-              )}
-
-              <Link to={`/products/${product._id}`}>
-                <img
-                  src={product.img}
-                  alt={product.name}
-                  className="w-full h-56 object-cover hover:scale-105 duration-300"
-                />
-              </Link>
-
-              <div className="p-4 flex flex-col flex-grow">
-                <p className="text-xs font-semibold text-[var(--primary-color)] mb-1">
-                  {product.category}
-                </p>
+            return (
+              <div
+                key={product._id}
+                ref={!isSearching && isLast ? lastElementRef : null}
+                className="bg-white shadow-md rounded-2xl overflow-hidden border flex flex-col relative"
+              >
+                {product.discount > 0 && (
+                  <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
+                    -{product.discount}%
+                  </div>
+                )}
 
                 <Link to={`/products/${product._id}`}>
-                  <h2 className="text-lg font-semibold hover:text-[var(--secondary-color)]">
-                    {product.name}
-                  </h2>
+                  <img
+                    src={product.img}
+                    alt={product.name}
+                    className="w-full h-56 object-cover hover:scale-105 duration-300"
+                  />
                 </Link>
 
-                <div className="mt-2 flex items-center gap-2">
-                  <span className="text-[var(--secondary-color)] font-bold text-lg">
-                    ৳{" "}
-                    {Math.round(
-                      product.price - (product.price * product.discount) / 100
-                    )}
-                  </span>
+                <div className="p-4 flex flex-col flex-grow">
+                  <p className="text-xs font-semibold text-[var(--primary-color)] mb-1">
+                    {product.category}
+                  </p>
 
-                  {product.discount > 0 && (
-                    <span className="line-through text-sm text-gray-500">
-                      ৳ {product.price}
+                  <Link to={`/products/${product._id}`}>
+                    <h2 className="text-lg font-semibold hover:text-[var(--secondary-color)]">
+                      {product.name}
+                    </h2>
+                  </Link>
+
+                  <div className="mt-2 flex items-center gap-2">
+                    <span className="text-[var(--secondary-color)] font-bold text-lg">
+                      ৳{" "}
+                      {Math.round(
+                        product.price - (product.price * product.discount) / 100
+                      )}
                     </span>
-                  )}
-                </div>
 
-                <button
-                  onClick={() => addToCart(product)}
-                  disabled={product.stock === 0}
-                  className={`mt-auto flex items-center justify-center gap-2 py-3 px-6 rounded-lg text-white font-medium transition ${
-                    product.stock === 0
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)]"
-                  }`}
-                >
-                  <ShoppingCart className="inline w-4 h-4 mr-1" />
-                  {product.stock === 0 ? "Unavailable" : "Add to Cart"}
-                </button>
+                    {product.discount > 0 && (
+                      <span className="line-through text-sm text-gray-500">
+                        ৳ {product.price}
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={() => addToCart(product)}
+                    disabled={product.stock === 0}
+                    className={`mt-auto flex items-center justify-center gap-2 py-3 px-6 rounded-lg text-white font-medium transition ${
+                      product.stock === 0
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)]"
+                    }`}
+                  >
+                    <ShoppingCart className="inline w-4 h-4 mr-1" />
+                    {product.stock === 0 ? "Unavailable" : "Add to Cart"}
+                  </button>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {loading && (
         <p className="text-center py-6 text-green-700">Loading products...</p>
@@ -217,4 +224,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Combos;

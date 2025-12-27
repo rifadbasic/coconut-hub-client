@@ -9,7 +9,7 @@ const Checkout = () => {
   const [coupon, setCoupon] = useState("");
   const [discount, setDiscount] = useState(0);
 
-  console.log(totalPrice)
+  // console.log(totalPrice)
   const navigate = useNavigate();
 
   const handleDeliveryChange = (e) => {

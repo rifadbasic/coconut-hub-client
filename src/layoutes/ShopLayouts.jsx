@@ -73,15 +73,15 @@ const ShopLayouts = () => {
             <div>
               <h3 className="font-semibold mb-2">Category</h3>
               {[
-                "Hair Care",
-                "Skin Care",
-                "Body Care",
-                "Face Care",
-                "Eyes Care",
-                "Oral Care",
-                "Cosmetics",
-                "Accessories",
-                "Wearables",
+                "hair care",
+                "skin care",
+                "body care",
+                "face care",
+                "eyes care",
+                "oral care",
+                "cosmetics",
+                "accessories",
+                "wearables",
               ].map((cat) => (
                 <label key={cat} className="flex gap-2">
                   <input

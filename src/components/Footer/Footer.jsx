@@ -49,21 +49,17 @@ const Footer = () => {
             <Link to="/" className="hover:underline">
               Home
             </Link>
-            <Link to="/shop" className="hover:underline">
+            <Link to="/shop/products" className="hover:underline">
               Shop
             </Link>
             <Link to="/about" className="hover:underline">
               About
             </Link>
-            <Link to="/contact" className="hover:underline">
-              Contact
-            </Link>
-            <Link to="/privacy" className="hover:underline">
+            
+            <Link to="/our-policy" className="hover:underline">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:underline">
-              Terms
-            </Link>
+            
           </div>
         </div>
 

@@ -11,11 +11,13 @@ import FinalCheckout from "../pages/checkout/FinalCheckout";
 import LogIn from "../pages/signup/LogIn";
 import Register from "../pages/signup/Register";
 import NewArivle from "../pages/NewArivle";
+import Combos from "../pages/Combos";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    errorElement: <div>Error occurred!</div>,
+    errorElement: <NotFound />,
     element: <MainLayouts />,
     children: [
       {
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/shop",
+        errorElement: <NotFound />,
         element: <ShopLayouts />,
         children: [
           {
@@ -34,6 +37,10 @@ const router = createBrowserRouter([
             path: "/shop/new-arivle",
             element: <NewArivle />,
           },
+          {
+            path: "/shop/combo",
+            element: <Combos />,
+          }
         ],
       },
       {
