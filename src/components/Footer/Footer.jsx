@@ -26,7 +26,7 @@ const Footer = () => {
               </h1>
             </div>
           </div>
-          <p className="text-sm mb-4">123 Coconut Street, Khulna, Bangladesh</p>
+          <p className="text-sm mb-4">Bagerhat Sadar, Khulna, Bangladesh</p>
           <form className="flex flex-col sm:flex-row items-center gap-2">
             <input
               type="text"
@@ -107,7 +107,7 @@ const Footer = () => {
       <div className="border-t border-white/30 text-center py-4 text-sm">
         <p>
           © {currentYear} Beauty & Care | Created by{" "}
-          <span className="font-semibold">rifadbasic</span>
+          <a href="https://my-portfolio-app-sepia.vercel.app/" target="_blank" className="font-semibold">rifadbasic</a>
         </p>
       </div>
     </footer>

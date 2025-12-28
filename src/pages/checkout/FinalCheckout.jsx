@@ -8,15 +8,19 @@ import { toast, Bounce } from "react-toastify";
 const FinalCheckout = () => {
   const { cartItems } = useCart();
   const location = useLocation();
-  const { finalTotal = 0 } = location.state || {};
-  const discount = location.state?.discount || 0;
-  const deliveryCharge = location.state?.deliveryCharge || 0;
-  const coupon = location.state?.coupon || "";
   const axios = useAxios();
-
   console.log(cartItems);
 
-  // Generate Invoice Number
+  // ✅ Values coming from Checkout
+  const {
+    finalTotal = 0,
+    discountAmount = 0,
+    discountPercentage = 0,
+    deliveryCharge = 0,
+    coupon = "",
+  } = location.state || {};
+
+  // 🧾 Invoice Number Generator
   const generateInvoiceNumber = () => {
     const previous = localStorage.getItem("invoiceCounter");
     const newCount = previous ? parseInt(previous) + 1 : 1;
@@ -35,8 +39,6 @@ const FinalCheckout = () => {
     agree: false,
   });
 
-  // console.log(formData);
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
@@ -50,12 +52,6 @@ const FinalCheckout = () => {
       return toast.error("Please agree to terms and conditions", {
         position: "top-center",
         autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
         transition: Bounce,
       });
     }
@@ -69,12 +65,6 @@ const FinalCheckout = () => {
       return toast.error("Please fill in all required fields", {
         position: "top-center",
         autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
         transition: Bounce,
       });
     }
@@ -83,36 +73,50 @@ const FinalCheckout = () => {
       return toast.error("Your cart is empty", {
         position: "top-center",
         autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
         transition: Bounce,
       });
     }
 
     const invoiceNumber = generateInvoiceNumber();
 
+    // ✅ ORDER OBJECT (ONLY ADDITION IS discountPercentage)
     const order = {
       invoiceNumber,
-      ...formData,
+
+      customer: {
+        name: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        address: formData.address,
+        division: formData.division,
+        zip: formData.zip,
+      },
+
+      paymentMethod: formData.paymentMethod,
+
       cartItems: cartItems.map((item) => ({
-        _id: item._id, // productId
+        productId: item._id,
         name: item.name,
         price: Number(item.finalPrice),
         quantity: item.quantity,
       })),
-      finalTotal: Number(finalTotal),
-      discount: Number(discount || 0),
-      deliveryCharge: Number(deliveryCharge || 0),
-      coupon,
+
+      pricing: {
+        subtotal: cartItems.reduce(
+          (sum, item) => sum + item.finalPrice * item.quantity,
+          0
+        ),
+        discountAmount: Number(discountAmount), // ✅ Correct value
+        discountPercentage: Number(discountPercentage),
+        deliveryCharge: Number(deliveryCharge),
+        coupon,
+        finalTotal: Number(finalTotal),
+      },
+
       status: "pending",
       createdAt: new Date(),
     };
 
-    // console.log(order);
     try {
       const response = await axios.post("/orders", order);
 
@@ -126,6 +130,7 @@ const FinalCheckout = () => {
         localStorage.removeItem("cartItems");
         localStorage.removeItem("finalTotal");
         localStorage.removeItem("discount");
+        localStorage.removeItem("discountPercentage");
         localStorage.removeItem("deliveryCharge");
         localStorage.removeItem("coupon");
 
@@ -140,6 +145,9 @@ const FinalCheckout = () => {
     }
   };
 
+
+  
+
   const divisions = [
     "Dhaka",
     "Chattogram",
@@ -153,11 +161,12 @@ const FinalCheckout = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-2 gap-8">
-      {/* Left: Customer Info */}
+      {/* Left */}
       <div>
         <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">
           📝 Customer Info
         </h2>
+
         <div className="space-y-4">
           <input
             type="text"
@@ -219,66 +228,53 @@ const FinalCheckout = () => {
         </div>
       </div>
 
-      {/* Right: Payment & Policy */}
+      {/* Right */}
       <div>
         <h2 className="text-2xl font-bold text-[var(--secondary-color)] mb-4">
           💳 Payment & Policy
         </h2>
 
-        <div className="mb-6">
-          <h3 className="font-semibold mb-2">Select Payment Method:</h3>
+        <label className="flex items-center gap-2 mb-2">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="cod"
+            checked={formData.paymentMethod === "cod"}
+            onChange={handleChange}
+          />
+          Cash on Delivery
+        </label>
 
-          <label className="flex items-center gap-2 mb-2">
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="cod"
-              checked={formData.paymentMethod === "cod"}
-              onChange={handleChange}
-            />
-            <span>Cash on Delivery</span>
-          </label>
+        <label className="flex items-center gap-2 mb-4">
+          <input
+            type="radio"
+            name="paymentMethod"
+            value="card"
+            checked={formData.paymentMethod === "card"}
+            onChange={handleChange}
+          />
+          Card Payment
+        </label>
 
-          <label className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="paymentMethod"
-              value="card"
-              checked={formData.paymentMethod === "card"}
-              onChange={handleChange}
-            />
-            <span>Card Payment</span>
-          </label>
-        </div>
+        <label className="flex items-center gap-2 mb-4">
+          <input
+            type="checkbox"
+            name="agree"
+            checked={formData.agree}
+            onChange={handleChange}
+          />
+          <span>
+            I agree with the{" "}
+            <Link
+              to="/our-policy"
+              className="font-semibold text-[var(--secondary-color)]"
+            >
+              Privacy Policy
+            </Link>
+          </span>
+        </label>
 
-        <div className="mb-4">
-          <h3 className="font-semibold mb-2">Return Policy:</h3>
-          <p className="text-sm text-gray-600 mb-2">
-            You can return products within 7 days of receiving the order if the
-            product is damaged or not as described.
-          </p>
-
-          <label className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name="agree"
-              checked={formData.agree}
-              onChange={handleChange}
-            />
-            <span>
-              I agree with the{" "}
-              <Link
-                to="/our-policy"
-                className="text-[var(--secondary-color)] hover:text-[var(--primary-color)] font-semibold"
-              >
-                Privacy Policy
-              </Link>
-              .
-            </span>
-          </label>
-        </div>
-
-        <div className="border-t pt-4 mt-4">
+        <div className="border-t pt-4">
           <div className="flex justify-between font-bold text-lg mb-4">
             <span>Total Price:</span>
             <span className="text-[var(--secondary-color)]">

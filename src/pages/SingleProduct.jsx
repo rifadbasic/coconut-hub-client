@@ -159,7 +159,7 @@ const SingleProduct = () => {
           <button
             onClick={() => addToCart(product)}
             disabled={product.stock === 0}
-            className={`flex items-center gap-2 py-3 px-6 rounded-lg text-white font-medium transition ${
+            className={`flex justify-center items-center gap-2 py-3 px-6 rounded-lg text-white font-medium transition ${
               product.stock === 0
                 ? "bg-gray-400 cursor-not-allowed"
                 : "bg-[var(--secondary-color)] hover:bg-[var(--primary-color)] duration-200"

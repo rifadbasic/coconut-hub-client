@@ -40,7 +40,7 @@ const router = createBrowserRouter([
           {
             path: "/shop/combo",
             element: <Combos />,
-          }
+          },
         ],
       },
       {
@@ -70,7 +70,7 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <Register />,
-      }
+      },
     ],
   },
 ]);

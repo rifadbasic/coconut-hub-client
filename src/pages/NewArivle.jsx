@@ -27,7 +27,7 @@ const NewArivle = () => {
   const observer = useRef(null);
   const isFetching = useRef(false);
 
-  // 🔥 MAIN FETCH FUNCTION (NORMAL PRODUCTS ONLY)
+  // 🔥 MAIN FETCH FUNCTION — ONLY "new" PRODUCTS
   const loadProducts = useCallback(
     async (reset = false) => {
       if (isSearching) return;
@@ -43,23 +43,19 @@ const NewArivle = () => {
             : "";
 
         const sortQuery = sortOption ? `&sort=${sortOption}` : "";
-
         const currentPage = reset ? 1 : page;
 
+        // ✅ CHANGED: status=new added to API call
         const res = await axiosPublic.get(
-          `/products?page=${currentPage}&limit=10${categoryQuery}${sortQuery}`
+          `/products?page=${currentPage}&limit=10&status=new${categoryQuery}${sortQuery}`
         );
 
-        // 🔹 Filter: ONLY products with status "new"
-        const filteredProducts = res.data.products.filter(
-          (p) => p.status === "new"
-        );
-
-        setProducts((prev) =>
-          reset ? filteredProducts : [...prev, ...filteredProducts]
-        );
-
-        setHasMore(res.data.hasMore);
+        if (res.data.success) {
+          setProducts((prev) =>
+            reset ? res.data.products : [...prev, ...res.data.products]
+          );
+          setHasMore(res.data.hasMore);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -70,24 +66,35 @@ const NewArivle = () => {
     [page, sortOption, selectedCategories, hasMore, isSearching, axiosPublic]
   );
 
-  // 🔍 SEARCH RESULTS (RESET EVERYTHING)
+  // 🔍 SEARCH (ONLY "new" PRODUCTS)
   useEffect(() => {
     if (!query) return;
 
-    setLoading(true);
-    setHasMore(false);
-    setPage(1);
+    const fetchSearch = async () => {
+      try {
+        setLoading(true);
+        setHasMore(false);
+        setPage(1);
 
-    axiosPublic.get(`/search?q=${query}`).then((res) => {
-      if (res.data.success) {
-        // 🔹 Filter: ONLY products with status "new" in search
-        setProducts(res.data.products.filter((p) => p.status === "new"));
+        // ✅ CHANGED: status=new in search
+        const res = await axiosPublic.get(
+          `/products?search=${query}&status=new`
+        );
+
+        if (res.data.success) {
+          setProducts(res.data.products);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    });
+    };
+
+    fetchSearch();
   }, [query, axiosPublic]);
 
-  // 📌 PAGE CHANGE → LOAD MORE (ONLY WHEN NOT SEARCHING)
+  // 📌 PAGE CHANGE → LOAD MORE
   useEffect(() => {
     if (isSearching) return;
     loadProducts();
@@ -130,16 +137,14 @@ const NewArivle = () => {
             </span>
           </>
         ) : (
-          <>
-            <h1 className="text-3xl font-bold text-center mb-6 text-[var(--secondary-color)]">
-              New Arrival Products
-            </h1>
-          </>
+          <h1 className="text-3xl font-bold text-center mb-6 text-[var(--secondary-color)]">
+            New Arrival Products
+          </h1>
         )}
       </h1>
 
       {products.length === 0 && !loading ? (
-        // 🔹 Show message when no new products
+        // ✅ CHANGED: Correct empty state
         <p className="text-center text-gray-500 py-6 text-lg">
           No New Arrival Products
         </p>

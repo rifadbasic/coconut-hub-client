@@ -24,6 +24,8 @@ const Combos = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
+  console.log(products);
+
   const observer = useRef(null);
   const isFetching = useRef(false);
 
@@ -43,20 +45,14 @@ const Combos = () => {
             : "";
 
         const sortQuery = sortOption ? `&sort=${sortOption}` : "";
-
         const currentPage = reset ? 1 : page;
 
         const res = await axiosPublic.get(
-          `/products?page=${currentPage}&limit=10${categoryQuery}${sortQuery}`
-        );
-
-        // 🔹 Filter: ONLY products with status "combo"
-        const filteredProducts = res.data.products.filter(
-          (p) => p.status === "combo"
+          `/products?page=${currentPage}&limit=10&status=combo${categoryQuery}${sortQuery}`
         );
 
         setProducts((prev) =>
-          reset ? filteredProducts : [...prev, ...filteredProducts]
+          reset ? res.data.products : [...prev, ...res.data.products]
         );
 
         setHasMore(res.data.hasMore);
@@ -74,17 +70,30 @@ const Combos = () => {
   useEffect(() => {
     if (!query) return;
 
-    setLoading(true);
-    setHasMore(false);
-    setPage(1);
+    const fetchSearch = async () => {
+      try {
+        setLoading(true);
+        setHasMore(false);
+        setPage(1);
 
-    axiosPublic.get(`/search?q=${query}`).then((res) => {
-      if (res.data.success) {
-        // 🔹 Filter: ONLY products with status "combo" in search
-        setProducts(res.data.products.filter((p) => p.status === "combo"));
+        const res = await axiosPublic.get(
+          `/products?search=${query}&status=combo`
+        );
+
+        console.log("API products:", res.data.products);
+
+
+        if (res.data.success) {
+          setProducts(res.data.products);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false); // ✅ CORRECT PLACE
       }
-      setLoading(false);
-    });
+    };
+
+    fetchSearch();
   }, [query, axiosPublic]);
 
   // 📌 PAGE CHANGE → LOAD MORE (ONLY WHEN NOT SEARCHING)
@@ -132,16 +141,16 @@ const Combos = () => {
         ) : (
           <>
             <h1 className="text-3xl font-bold text-center mb-6 text-[var(--secondary-color)]">
-             All Combo Products
+              All Combo Products
             </h1>
           </>
         )}
       </h1>
 
       {products.length === 0 && !loading ? (
-        // 🔹 Show message when no combo products
+        // 🔹 Show message when no new products
         <p className="text-center text-gray-500 py-6 text-lg">
-          No Combo Products
+          No New Arrival Products
         </p>
       ) : (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

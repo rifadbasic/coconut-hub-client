@@ -101,6 +101,8 @@ const FloatingCartButton = () => {
         bg-[var(--secondary-color)]
         p-4
         rounded-full
+        border-2
+        border-black
         shadow-lg
         cursor-grab
         active:cursor-grabbing

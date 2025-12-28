@@ -66,7 +66,7 @@ const About = () => {
               <h3 className="text-lg font-semibold">Helpline:</h3>
               <div className="flex gap-3 items-center">
                 <Phone size={20}/>
-              <p className="text-gray-700 text-lg"> +880 1234 567 890</p>
+              <p className="text-gray-700 text-lg"> +8801765574008</p>
               </div>
             </div>
 
