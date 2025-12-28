@@ -1,6 +1,11 @@
 import React from "react";
 
 const OurPolicy = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Return & Refund Policy";
+
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-10">
       {/* Header */}

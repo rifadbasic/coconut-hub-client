@@ -23,6 +23,11 @@ const COUPONS = {
 };
 
 const Checkout = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Checkout";
+
+
   const { cartItems, totalPrice } = useCart();
   const navigate = useNavigate();
 

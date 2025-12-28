@@ -1,6 +1,11 @@
 import { Link } from "react-router";
 
 const NotFound = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Page Not Found";
+
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-6">
       {/* Main 404 Number */}

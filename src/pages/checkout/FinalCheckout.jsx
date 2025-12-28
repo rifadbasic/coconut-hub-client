@@ -6,6 +6,11 @@ import { makeInvoiceHTML } from "../../components/invoice/makeInvoice";
 import { toast, Bounce } from "react-toastify";
 
 const FinalCheckout = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Final Checkout";
+
+
   const { cartItems } = useCart();
   const location = useLocation();
   const axios = useAxios();

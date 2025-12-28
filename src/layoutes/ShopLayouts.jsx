@@ -3,6 +3,10 @@ import { Outlet, NavLink } from "react-router";
 import { Filter, Menu, X } from "lucide-react";
 
 const ShopLayouts = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Shop";
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [sortOption, setSortOption] = useState("");

@@ -25,6 +25,11 @@ const responsive = {
 };
 
 const SingleProduct = () => {
+
+   // dynamic title
+    document.title = "Beauty & Care | Product Details";
+
+
   const { id } = useParams();
   const { addToCart } = useCart();
   const axios = useAxios();
